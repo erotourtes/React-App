@@ -32,7 +32,7 @@ function NavBar() {
 
 function TaskList() {
   return (
-    <div className="w-[250px]">
+    <div className="w-[250px] space-y-3">
       <div className="flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
         <p>To Do</p>
         <div className="flex gap-4">
@@ -40,7 +40,7 @@ function TaskList() {
           <EllipsisVertical />
         </div>
       </div>
-      <Button variant="outline" className="w-full gap-2">
+      <Button variant="outline" className="w-full gap-2 border-dashed border-2">
         <Plus />
         Add new card
       </Button>
@@ -56,7 +56,7 @@ function TaskCard() {
         Task 1
         <EllipsisVertical />
       </CardHeader>
-      <CardContent className="p-3 flex flex-col">
+      <CardContent className="p-3 flex flex-col gap-y-3">
         <p className="text-[0.9rem] opacity-grayish">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -70,7 +70,7 @@ function TaskCard() {
         </div>
         <Select>
           <SelectTrigger className="w-full bg-secondary">
-            <SelectValue placeholder="Theme" />
+            <SelectValue placeholder="Move to:" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="light">Light</SelectItem>
@@ -85,10 +85,12 @@ function TaskCard() {
 
 function App() {
   return (
-    <>
-      <NavBar />
+    <div className="container p-5">
+      <div className="mb-7">
+        <NavBar />
+      </div>
       <TaskList />
-    </>
+    </div>
   );
 }
 
