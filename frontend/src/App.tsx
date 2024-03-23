@@ -1,15 +1,28 @@
 import {
-  Plus,
-  History,
-  EllipsisVertical,
+  BarChart,
   Calendar,
+  EllipsisVertical,
+  FileBarChart2,
+  History,
   Pencil,
+  Plus,
   Trash2,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 import "./App.css";
-import { Button } from "./components/ui/button";
+import { PopupIcon } from "./components/popmenu-utils";
+import { H3 } from "./components/typography";
 import { Badge } from "./components/ui/badge";
+import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
+import { Dialog, DialogContent, DialogTrigger } from "./components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -17,7 +30,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
-import { H3 } from "./components/typography";
 import {
   Sheet,
   SheetContent,
@@ -26,13 +38,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./components/ui/dropdown-menu";
-import { PopupIcon } from "./components/popmenu-utils";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 function NavBar() {
   return (
@@ -108,18 +114,73 @@ function TaskList() {
 }
 
 function TaskCard() {
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
   return (
     <Card>
       <CardHeader className="p-3 flex-row justify-between">
         Task 1
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={setOpenMenu} open={openMenu}>
           <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>
-              <PopupIcon icon={<Pencil />} />
-              Edit
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <Dialog
+                onOpenChange={(open) => {
+                  if (!open) setOpenMenu(false);
+                  setOpenDialog(open);
+                }}
+                open={openDialog}
+              >
+                <DialogTrigger className="w-full flex">
+                  <PopupIcon icon={<Pencil />} />
+                  Edit
+                </DialogTrigger>
+                <DialogContent className="overflow-hidden p-0 border-0 min-w-[90vw] min-h-[90vh]">
+                  <div>
+                    <div className="flex h-[50px] bg-primary text-primary-foreground items-center justify-end p-3">
+                      <DialogClose
+                        asChild
+                        className="hover:text-primary hover:bg-primary-foreground rounded-full cursor-pointer"
+                      >
+                        <X />
+                      </DialogClose>
+                    </div>
+
+                    <div className="flex h-full">
+                      <div className="p-10 flex-[4]">
+                        <H3>Task Name</H3>
+                        <div className="flex pt-3">
+                          <div className="flex w-1/5 text-secondary-foreground opacity-grayish gap-3">
+                            <FileBarChart2 /> Status
+                          </div>
+                          In progress
+                        </div>
+
+                        <div className="flex pt-3">
+                          <div className="flex w-1/5 text-secondary-foreground opacity-grayish gap-3">
+                            <Calendar /> Due date
+                          </div>
+                          2022-12-31
+                        </div>
+
+                        <div className="flex pt-3">
+                          <div className="flex w-1/5 text-secondary-foreground opacity-grayish gap-3">
+                            <BarChart /> Priority
+                          </div>
+                          Low
+                        </div>
+                        <H3 className="mt-10">Description</H3>
+                      </div>
+                      <div className="p-10 flex-[2] bg-secondary text-secondary-foreground">
+                        <H3>Activity</H3>
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </DropdownMenuItem>
             <DropdownMenuItem className="des-btn focus:des-btn-rev">
               <PopupIcon icon={<Trash2 />} />
