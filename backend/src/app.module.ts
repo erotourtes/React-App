@@ -1,10 +1,31 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import databaseConfig from './config/database.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TaskModule } from './tasks/tasks.module';
+import { TaskListModule } from './task-lists/task-lists.module';
+import { Task } from './tasks/tasks.entity';
+import { TaskList } from './task-lists/task-lists.entity';
+import { AppLoggerMiddleware } from './middlewares/AppLoggerMiddleware';
+import { History } from './history/history.entity';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ envFilePath: '.env.local' }),
+    TypeOrmModule.forRoot({
+      ...databaseConfig(),
+      entities: [Task, TaskList, History],
+      // subscribers: [TaskSubscriber], // Manually connecting in tasks.eventsubscriber.ts
+    }),
+    TaskModule,
+    TaskListModule,
+    ConfigModule,
+  ],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}
