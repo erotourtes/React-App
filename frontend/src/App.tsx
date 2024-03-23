@@ -1,4 +1,11 @@
-import { Plus, History, EllipsisVertical, Calendar } from "lucide-react";
+import {
+  Plus,
+  History,
+  EllipsisVertical,
+  Calendar,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import "./App.css";
 import { Button } from "./components/ui/button";
 import { Badge } from "./components/ui/badge";
@@ -19,6 +26,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./components/ui/dropdown-menu";
 
 function NavBar() {
   return (
@@ -80,7 +93,21 @@ function TaskCard() {
     <Card>
       <CardHeader className="p-3 flex-row justify-between">
         Task 1
-        <EllipsisVertical />
+        <DropdownMenu>
+          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
+            <EllipsisVertical />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Pencil className="mr-2 w-4 h-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive-foreground focus:bg-destructive-foreground focus:text-destructive">
+              <Trash2 className="mr-2 w-4 h-4" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </CardHeader>
       <CardContent className="p-3 flex flex-col gap-y-3">
         <p className="text-[0.9rem] opacity-grayish">
