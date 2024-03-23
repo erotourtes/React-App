@@ -39,6 +39,7 @@ import {
   SheetTrigger,
 } from "./components/ui/sheet";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useGetAllTasksQuery, useGetAllTaskListsQuery } from "./redux/apiSlice";
 
 function NavBar() {
   return (
@@ -217,6 +218,11 @@ function TaskCard() {
 }
 
 function App() {
+  const { data: tasks } = useGetAllTasksQuery();
+  console.log(tasks);
+  const { data: lists } = useGetAllTaskListsQuery();
+  console.log(lists);
+
   return (
     <div className="container p-5">
       <div className="mb-7">
