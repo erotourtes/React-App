@@ -47,7 +47,7 @@ function NavBar() {
       <H3>My Task Board</H3>
       <div className="space-x-5">
         <Sheet>
-          <SheetTrigger>
+          <SheetTrigger asChild>
             <Button variant="outline" className="gap-2">
               <History />
               History
