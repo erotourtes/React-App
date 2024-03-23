@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
-import { H3 } from "./components/ui/typography";
+import { H3 } from "./components/typography";
 import {
   Sheet,
   SheetContent,
@@ -32,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./components/ui/dropdown-menu";
+import { PopupIcon } from "./components/popmenu-utils";
 
 function NavBar() {
   return (
@@ -99,11 +100,11 @@ function TaskCard() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <Pencil className="mr-2 w-4 h-4" />
+              <PopupIcon icon={<Pencil />} />
               Edit
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive-foreground focus:bg-destructive-foreground focus:text-destructive">
-              <Trash2 className="mr-2 w-4 h-4" />
+            <DropdownMenuItem className="des-btn focus:des-btn-rev">
+              <PopupIcon icon={<Trash2 />} />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
