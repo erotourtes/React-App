@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsDateString,
   IsEnum,
   IsInt,
@@ -7,7 +6,8 @@ import {
   IsOptional,
   MaxLength,
 } from 'class-validator';
-import { Priority } from '../tasks.entity';
+import { Priority } from "./priority";
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateTaskDto {
   @MaxLength(128)
@@ -29,3 +29,5 @@ export class CreateTaskDto {
   @IsInt()
   taskListId: number;
 }
+
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {}

@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { TaskListsService } from './task-lists.service';
-import { CreateTaskListDto } from './dto/create-task.input';
+import { CreateTaskListDto } from '@shared/dtos';
 
 @Controller('task-lists')
 export class TaskListsController {
