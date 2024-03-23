@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TaskList } from './task-lists.entity';
-import { CreateTaskListDto } from './dto/create-task.input';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateTaskListDto } from '@shared/dtos';
 
 @Injectable()
 export class TaskListsService {

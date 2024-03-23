@@ -6,13 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TaskList } from 'src/task-lists/task-lists.entity';
-
-export enum Priority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  URGENT = 'urgent',
-}
+import { TaskPriority } from '@shared/dtos';
 
 @Entity()
 export class Task {
@@ -28,8 +22,8 @@ export class Task {
   @Column({ type: 'date', nullable: true })
   dueDate?: Date;
 
-  @Column({ type: 'enum', enum: Priority })
-  priority: Priority;
+  @Column({ type: 'enum', enum: TaskPriority })
+  priority: TaskPriority;
 
   @Column({ unique: true })
   order: number;
