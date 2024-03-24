@@ -24,12 +24,24 @@ import {
 import TaskEditDialog from "./TaskEditDialog";
 import { strDateFormat } from "@/utils/utils";
 
-function TaskCard({ task }: { task: TaskT }) {
+function TaskCard({
+  task,
+  selectedListId,
+}: {
+  task: TaskT;
+  selectedListId: number;
+}) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const { data: taskList = [] } = useGetAllTaskListsQuery();
   const [deleteTask] = useDeleteTaskMutation();
+
+  const onEditPressed = (e: Event) => {
+    e.preventDefault();
+    setOpenDialog(true);
+    setOpenMenu(false);
+  };
 
   return (
     <Card>
@@ -40,17 +52,9 @@ function TaskCard({ task }: { task: TaskT }) {
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <TaskEditDialog
-                isOpen={openDialog}
-                onDialogChange={(open) => {
-                  if (!open) setOpenMenu(false);
-                  setOpenDialog(open);
-                }}
-              >
-                <PopupIcon icon={<Pencil />} />
-                Edit
-              </TaskEditDialog>
+            <DropdownMenuItem onSelect={onEditPressed}>
+              <PopupIcon icon={<Pencil />} />
+              Edit
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => deleteTask(task.id)}
@@ -84,6 +88,14 @@ function TaskCard({ task }: { task: TaskT }) {
           </SelectContent>
         </Select>
       </CardContent>
+      <TaskEditDialog
+        isOpen={openDialog}
+        onDialogChange={(open) => {
+          setOpenDialog(open);
+        }}
+        task={task}
+        selectedListId={selectedListId}
+      />
     </Card>
   );
 }
