@@ -4,11 +4,11 @@
 
 @layer components {
   .des-btn {
-    @apply bg-destructive text-destructive-foreground;
+    @apply bg-destructive-foreground text-destructive
   }
 
   .des-btn-rev:focus {
-    @apply bg-destructive-foreground text-destructive
+    @apply bg-destructive text-destructive-foreground;
   }
 }
 
