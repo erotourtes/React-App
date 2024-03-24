@@ -9,7 +9,7 @@ import {
 import { CreateTaskDto, TaskT } from "@shared/dtos";
 import { X } from "lucide-react";
 
-type CardDialogProps = {
+type TaskDialogProps = {
   onDialogChange: (open: boolean) => void;
   isOpen: boolean;
   children?: React.ReactNode;
@@ -17,12 +17,12 @@ type CardDialogProps = {
   selectedListId: number;
 };
 
-const CardDialog = ({
+const TaskDialog = ({
   onDialogChange,
   isOpen,
   children,
   selectedListId,
-}: CardDialogProps) => {
+}: TaskDialogProps) => {
   function onSubmit(data: CreateTaskDto) {
     alert(data);
   }
@@ -50,4 +50,4 @@ const CardDialog = ({
   );
 };
 
-export default CardDialog;
+export default TaskDialog;
