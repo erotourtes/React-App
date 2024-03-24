@@ -8,3 +8,7 @@ export class CreateTaskListDto {
   @IsInt({ each: true })
   tasksIds: number[];
 }
+
+export class TaskList extends CreateTaskListDto {
+  id: number;
+}

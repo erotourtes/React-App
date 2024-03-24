@@ -31,3 +31,7 @@ export class CreateTaskDto {
 }
 
 export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
+
+export class Task extends CreateTaskDto {
+  id: number;
+}
