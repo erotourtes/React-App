@@ -25,7 +25,7 @@ function ListColumn({ list }: { list: TaskListT }) {
   return (
     <div className="w-[250px] space-y-3">
       <ListHeader list={list} />
-      <AddTaskBtn listId={list.id} />
+      <AddTaskBtn list={list} />
       {tasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}

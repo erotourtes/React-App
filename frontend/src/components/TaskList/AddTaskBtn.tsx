@@ -20,6 +20,7 @@ const AddTaskBtn = ({ list }: { list: TaskListT }) => {
       <TaskEditDialog
         isOpen={open}
         onDialogChange={setOpen}
+        selectedListId={list.id}
         task={{
           id: 0,
           description: "",
