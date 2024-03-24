@@ -1,4 +1,4 @@
-import TaskEditDialog from "@/components/TaskList/TaskEditDialog";
+import { AddTaskDialog } from "@/components/TaskList/TaskEditDialog";
 import { Button } from "@/components/ui/button";
 import { TaskListT } from "@shared/dtos";
 import { Plus } from "lucide-react";
@@ -17,7 +17,7 @@ const AddTaskBtn = ({ list }: { list: TaskListT }) => {
         <Plus />
         Add new card
       </Button>
-      <TaskEditDialog
+      <AddTaskDialog
         isOpen={open}
         onDialogChange={setOpen}
         selectedListId={list.id}

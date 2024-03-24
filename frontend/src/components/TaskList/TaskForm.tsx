@@ -27,21 +27,42 @@ import {
 } from "@components/ui/select";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { CreateTaskDto, TaskPriority, TaskT } from "@shared/dtos";
-import { BarChart, CalendarIcon } from "lucide-react";
+import { BarChart, CalendarIcon, Pencil } from "lucide-react";
+import { useContext, createContext } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { H3 } from "@/components/typography";
 
 interface TaskFormProps {
   task?: TaskT;
   listId: number;
   onSubmit: (data: CreateTaskDto) => void;
+  edit?: boolean;
+  onEditRequest?: () => void;
 }
 
-export function TaskForm({ listId, onSubmit }: TaskFormProps) {
+const FormContext = createContext<{
+  form: UseFormReturn<CreateTaskDto>;
+  edit: boolean;
+}>({
+  form: {} as UseFormReturn<CreateTaskDto>,
+  edit: false,
+});
+
+export function TaskForm({
+  task,
+  listId,
+  edit,
+  onSubmit,
+  onEditRequest,
+}: TaskFormProps) {
+  // CreateTaskDto and UpdateTaskDto are the same
   const form = useForm<CreateTaskDto>({
     resolver: classValidatorResolver(CreateTaskDto),
     defaultValues: {
-      name: "",
-      description: "",
+      name: task?.name || "",
+      priority: task?.priority || undefined,
+      description: task?.description || "",
+      dueDate: task?.dueDate || undefined,
       listId,
     },
   });
@@ -49,28 +70,48 @@ export function TaskForm({ listId, onSubmit }: TaskFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <FormName form={form} />
-        <FormDate form={form} />
-        <FormPriority form={form} />
-        <FormDescription form={form} />
-        <Button type="submit">Submit</Button>
+        <FormContext.Provider value={{ form, edit: edit == true }}>
+          <FormName onEditRequest={onEditRequest} />
+          <FormDate />
+          <FormPriority />
+          <FormDescription />
+          {edit && <Button type="submit">Submit</Button>}
+        </FormContext.Provider>
       </form>
     </Form>
   );
 }
 
-const FormName = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
+const FormName = ({ onEditRequest }: { onEditRequest?: () => void }) => {
+  const { form, edit } = useContext(FormContext);
+
   return (
     <FormField
       control={form.control}
       name="name"
       render={({ field }) => (
         <FormItem className="pt-5">
-          <Input
-            className="text-2xl font-semibold tracking-tight pl-0"
-            placeholder="Name"
-            {...field}
-          />
+          {edit ? (
+            <Input
+              placeholder="Name"
+              className="text-2xl font-semibold tracking-tight"
+              {...field}
+            />
+          ) : (
+            <div className="flex justify-between items-center">
+              <H3 className="py-3">{field.value}</H3>
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onEditRequest?.call(null);
+                }}
+              >
+                <Pencil className="h-4 w-4 mr-3" />
+                Edit Task
+              </Button>
+            </div>
+          )}
           <FormMessage />
         </FormItem>
       )}
@@ -78,35 +119,41 @@ const FormName = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
   );
 };
 
-const FormDate = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
+const FormDate = () => {
+  const { form, edit } = useContext(FormContext);
+
   return (
     <FormField
       control={form.control}
       name="dueDate"
       render={({ field }) => (
-        <FormItem className="flex items-baseline">
-          <FormLabel className="flex gap-3 min-w-[150px] max-w-[150px]">
+        <FormItem className="flex items-center">
+          <FormLabel className="flex gap-3 min-w-[150px] max-w-[150px] pt-2">
             <CalendarIcon className="h-4 w-4 opacity-50" />
             Due date
           </FormLabel>
           <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full text-left font-normal",
-                    !field.value && "text-muted-foreground"
-                  )}
-                >
-                  {field.value ? (
-                    strDateFormat(field.value)
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
+            {edit ? (
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={"outline"}
+                    className={`${cn(
+                      "w-full text-left font-normal",
+                      !field.value && "text-muted-foreground"
+                    )} justify-start`}
+                  >
+                    {field.value ? (
+                      strDateFormat(field.value)
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+            ) : (
+              <p className="pl-4">{strDateFormat(field.value)}</p>
+            )}
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
@@ -123,38 +170,46 @@ const FormDate = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
   );
 };
 
-const FormPriority = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
+const FormPriority = () => {
+  const { form, edit } = useContext(FormContext);
+
   return (
     <FormField
       control={form.control}
       name="priority"
       render={({ field }) => (
         <FormItem className="flex items-center">
-          <FormLabel className="flex gap-3 max-w-[150px] min-w-[150px] items-center">
+          <FormLabel className="flex gap-3 max-w-[150px] min-w-[150px] items-center pt-2">
             <BarChart />
             Priority
           </FormLabel>
-          <Select {...field} onValueChange={field.onChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {Object.values(TaskPriority).map((priority) => (
-                  <SelectItem key={priority} value={priority}>
-                    {priority.toLocaleLowerCase()}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {edit ? (
+            <Select {...field} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {Object.values(TaskPriority).map((priority) => (
+                    <SelectItem key={priority} value={priority}>
+                      {priority.toLocaleLowerCase()}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <p className="pl-4">{field.value}</p>
+          )}
         </FormItem>
       )}
     />
   );
 };
 
-const FormDescription = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
+const FormDescription = () => {
+  const { form, edit } = useContext(FormContext);
+
   return (
     <FormField
       control={form.control}
@@ -164,7 +219,11 @@ const FormDescription = ({ form }: { form: UseFormReturn<CreateTaskDto> }) => {
           <FormLabel className="text-2xl font-semibold tracking-tight">
             Description
           </FormLabel>
-          <Textarea placeholder="Description" {...field} rows={3} />
+          {edit ? (
+            <Textarea placeholder="Description" {...field} rows={3} />
+          ) : (
+            <p className="pl-4">{field.value}</p>
+          )}
           <FormMessage />
         </FormItem>
       )}

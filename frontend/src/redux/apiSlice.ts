@@ -24,6 +24,13 @@ export const tasksApi = createApi({
     getTasksForList: builder.query<TaskT[], number>({
       query: (list: number) => `tasks/?listId=${list}`,
     }),
+    updateTask: builder.mutation<TaskT, TaskT>({
+      query: (task) => ({
+        url: `tasks/${task.id}`,
+        method: "PATCH",
+        body: { ...task },
+      }),
+    }),
     deleteTask: builder.mutation<void, number>({
       query: (id) => ({
         url: `tasks/${id}`,
@@ -46,4 +53,5 @@ export const {
   useDeleteTaskMutation,
   useCreateNewTaskMutation,
   useCreateNewListMutation,
+  useUpdateTaskMutation,
 } = tasksApi;

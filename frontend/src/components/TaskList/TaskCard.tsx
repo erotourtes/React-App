@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import TaskEditDialog from "./TaskEditDialog";
+import { EditTaskDialog } from "./TaskEditDialog";
 import { strDateFormat } from "@/utils/utils";
 
 function TaskCard({
@@ -67,7 +67,9 @@ function TaskCard({
         </DropdownMenu>
       </CardHeader>
       <CardContent className="p-3 pt-0 flex flex-col gap-y-3">
-        <p className="text-[0.9rem] opacity-grayish">{task.description}</p>
+        <p className="text-[0.9rem] opacity-grayish text-ellipsis overflow-hidden line-clamp-1">
+          {task.description}
+        </p>
         <div className="flex gap-3">
           <Calendar />
           <span className="opacity-grayish">{strDateFormat(task.dueDate)}</span>
@@ -88,11 +90,9 @@ function TaskCard({
           </SelectContent>
         </Select>
       </CardContent>
-      <TaskEditDialog
+      <EditTaskDialog
         isOpen={openDialog}
-        onDialogChange={(open) => {
-          setOpenDialog(open);
-        }}
+        onDialogChange={(open) => setOpenDialog(open)}
         task={task}
         selectedListId={selectedListId}
       />
