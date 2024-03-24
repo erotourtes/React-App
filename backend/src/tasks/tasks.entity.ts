@@ -20,15 +20,14 @@ export class Task {
   description: string;
 
   @Column({ type: 'date', nullable: true })
-  dueDate?: Date;
+  dueDate?: string;
 
   @Column({ type: 'enum', enum: TaskPriority })
   priority: TaskPriority;
 
-  @Column({ unique: true })
-  order: number;
-
-  @ManyToOne(() => TaskList, (taskList) => taskList.tasks)
+  @ManyToOne(() => TaskList, (taskList) => taskList.tasks, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'listId' })
   list: TaskList;
 }

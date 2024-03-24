@@ -9,6 +9,7 @@ export class CreateTaskListDto {
   tasksIds: number[];
 }
 
-export class TaskList extends CreateTaskListDto {
+export type TaskList = {
   id: number;
+  name: string;
 }

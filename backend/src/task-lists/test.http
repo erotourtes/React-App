@@ -6,11 +6,6 @@ Content-Type: application/json
   "tasksIds": []
 }
 
+###
 
 GET http://localhost:3000/task-lists
-Content-Type: application/json
-
-{
-  "name": "Tasks List 1",
-  "tasksIds": []
-}

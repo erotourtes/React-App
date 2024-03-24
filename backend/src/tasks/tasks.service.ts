@@ -7,7 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './tasks.entity';
-import { CreateTaskDto, UpdateTaskDto } from '@shared/dtos';
+import { CreateTaskDto, TaskT, UpdateTaskDto } from '@shared/dtos';
 import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
@@ -20,17 +20,17 @@ export class TasksService {
     private listService: TaskListsService,
   ) {}
 
-  async findAll(id?: number): Promise<Task[]> {
+  async findAll(id?: number): Promise<TaskT[]> {
     return this.taskRepository.find({
       where: { list: { id } },
     });
   }
 
-  async findOne(id: number): Promise<Task> {
+  async findOne(id: number): Promise<TaskT> {
     return this.taskRepository.findOne({ where: { id } });
   }
 
-  async create(dto: CreateTaskDto): Promise<Task> {
+  async create(dto: CreateTaskDto): Promise<TaskT> {
     const list = await this.listService.findOne(dto.listId);
     if (!list)
       throw new NotFoundException(`List with id ${dto.listId} not found`);
@@ -42,7 +42,7 @@ export class TasksService {
     });
   }
 
-  async update(taskId: number, task: UpdateTaskDto): Promise<Task> {
+  async update(taskId: number, task: UpdateTaskDto): Promise<TaskT> {
     const foundTask = await this.taskRepository.findOne({
       where: { id: taskId },
     });

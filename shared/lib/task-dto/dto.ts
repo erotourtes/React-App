@@ -2,7 +2,6 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsNumber,
   IsOptional,
   MaxLength,
 } from "class-validator";
@@ -18,13 +17,10 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsDateString()
-  dueDate?: Date;
+  dueDate?: string;
 
   @IsEnum(Priority)
   priority: Priority;
-
-  @IsNumber()
-  order: number;
 
   @IsInt()
   listId: number;
@@ -32,11 +28,10 @@ export class CreateTaskDto {
 
 export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
 
-export class Task {
+export type Task = {
   id: number;
   name: string;
   description: string;
   dueDate?: string;
   priority: Priority;
-  order: number;
-}
+};

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TaskList } from './task-lists.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTaskListDto } from '@shared/dtos';
+import { CreateTaskListDto, TaskListT } from '@shared/dtos';
 
 @Injectable()
 export class TaskListsService {
@@ -11,15 +11,15 @@ export class TaskListsService {
     private readonly taskListsRepository: Repository<TaskList>,
   ) {}
 
-  async findAll(): Promise<TaskList[]> {
+  async findAll(): Promise<TaskListT[]> {
     return this.taskListsRepository.find();
   }
 
-  async findOne(id: number): Promise<TaskList> {
+  async findOne(id: number): Promise<TaskListT> {
     return this.taskListsRepository.findOne({ where: { id } });
   }
 
-  async create(dto: CreateTaskListDto): Promise<TaskList> {
+  async create(dto: CreateTaskListDto): Promise<TaskListT> {
     const newTaskList = this.taskListsRepository.create({ ...dto });
     return await this.taskListsRepository.save(newTaskList);
   }
