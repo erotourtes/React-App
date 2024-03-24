@@ -1,5 +1,11 @@
-import { TaskT } from "@shared/dtos";
-import { Calendar, EllipsisVertical, Pencil, Trash2 } from "lucide-react";
+import { TaskListT, TaskT } from "@shared/dtos";
+import {
+  Calendar,
+  EllipsisVertical,
+  FileBarChart,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import {
   useDeleteTaskMutation,
@@ -26,10 +32,10 @@ import { strDateFormat } from "@/utils/utils";
 
 function TaskCard({
   task,
-  selectedListId,
+  list: selectedList,
 }: {
   task: TaskT;
-  selectedListId: number;
+  list: TaskListT;
 }) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -71,6 +77,10 @@ function TaskCard({
           {task.description}
         </p>
         <div className="flex gap-3">
+          <FileBarChart />
+          {selectedList.name}
+        </div>
+        <div className="flex gap-3">
           <Calendar />
           <span className="opacity-grayish">{strDateFormat(task.dueDate)}</span>
         </div>
@@ -83,7 +93,11 @@ function TaskCard({
           </SelectTrigger>
           <SelectContent>
             {taskList.map((list) => (
-              <SelectItem key={list.id} value={list.id.toString()}>
+              <SelectItem
+                disabled={list.id == selectedList.id}
+                key={list.id}
+                value={list.id.toString()}
+              >
                 {list.name}
               </SelectItem>
             ))}
@@ -95,7 +109,7 @@ function TaskCard({
           isOpen={openDialog}
           onDialogChange={(open) => setOpenDialog(open)}
           task={task}
-          selectedListId={selectedListId}
+          selectedListId={selectedList.id}
         />
       )}
     </Card>

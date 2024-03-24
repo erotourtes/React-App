@@ -9,12 +9,18 @@ import {
 
 import { TaskListT } from "@shared/dtos";
 
-function ListHeader({ list }: { list: TaskListT }) {
+function ListHeader({
+  list,
+  taskCount,
+}: {
+  list: TaskListT;
+  taskCount: number;
+}) {
   return (
     <div className="flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
       <p>{list.name}</p>
       <div className="flex gap-4">
-        <p>45</p>
+        <p>{taskCount}</p>
         <DropdownMenu>
           <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
             <EllipsisVertical />

@@ -11,7 +11,7 @@ function TaskList() {
   const { data: lists = [] } = useGetAllTaskListsQuery();
 
   return (
-    <div className="flex gap-10 flex-wrap">
+    <div className="flex gap-10 flex-wrap md:flex-nowrap md:overflow-x-scroll">
       {lists.map((list) => (
         <ListColumn key={list.id} list={list} />
       ))}
@@ -23,11 +23,11 @@ function ListColumn({ list }: { list: TaskListT }) {
   const { data: tasks = [] } = useGetTasksForListQuery(list.id);
 
   return (
-    <div className="w-[250px] space-y-3">
-      <ListHeader list={list} />
+    <div className="min-w-[250px] space-y-3">
+      <ListHeader list={list} taskCount={tasks.length} />
       <AddTaskBtn list={list} />
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} selectedListId={list.id} />
+        <TaskCard key={task.id} task={task} list={list} />
       ))}
     </div>
   );
