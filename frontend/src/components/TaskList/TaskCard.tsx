@@ -90,12 +90,14 @@ function TaskCard({
           </SelectContent>
         </Select>
       </CardContent>
-      <EditTaskDialog
-        isOpen={openDialog}
-        onDialogChange={(open) => setOpenDialog(open)}
-        task={task}
-        selectedListId={selectedListId}
-      />
+      {openDialog && (
+        <EditTaskDialog
+          isOpen={openDialog}
+          onDialogChange={(open) => setOpenDialog(open)}
+          task={task}
+          selectedListId={selectedListId}
+        />
+      )}
     </Card>
   );
 }
