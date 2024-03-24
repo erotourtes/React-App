@@ -1,5 +1,7 @@
-import { H3 } from "./typography";
-import { Button } from "./ui/button";
+import CreateNewList from "@/components/NavBar/CreateNewList";
+import { History } from "lucide-react";
+import { H3 } from "../typography";
+import { Button } from "../ui/button";
 import {
   Sheet,
   SheetContent,
@@ -7,14 +9,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
-import { History, Plus } from "lucide-react";
+} from "../ui/sheet";
 
 function NavBar() {
   return (
-    <nav className="flex justify-between items-center">
+    <nav className="flex flex-wrap justify-between items-center">
       <H3>My Task Board</H3>
-      <div className="space-x-5">
+      <div className="space-x-5 flex">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" className="gap-2">
@@ -37,10 +38,7 @@ function NavBar() {
           </SheetContent>
         </Sheet>
 
-        <Button className="gap-2">
-          <Plus />
-          Create new list
-        </Button>
+        <CreateNewList />
       </div>
     </nav>
   );

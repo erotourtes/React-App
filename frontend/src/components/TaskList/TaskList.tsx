@@ -1,19 +1,17 @@
-import { Button } from "@components/ui/button";
-import TaskCard from "./TaskCard";
-import { TaskListT } from "@shared/dtos";
-import ListHeader from "./ListHeader";
-import { Plus } from "lucide-react";
+import AddTaskBtn from "@/components/TaskList/AddTaskBtn";
 import {
   useGetAllTaskListsQuery,
   useGetTasksForListQuery,
 } from "@redux/apiSlice";
-import AddTaskBtn from "@/components/TaskList/AddTaskBtn";
+import { TaskListT } from "@shared/dtos";
+import ListHeader from "./ListHeader";
+import TaskCard from "./TaskCard";
 
 function TaskList() {
   const { data: lists = [] } = useGetAllTaskListsQuery();
 
   return (
-    <div className="flex gap-10">
+    <div className="flex gap-10 flex-wrap">
       {lists.map((list) => (
         <ListColumn key={list.id} list={list} />
       ))}

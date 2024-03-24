@@ -20,10 +20,8 @@ const AddTaskBtn = ({ list }: { list: TaskListT }) => {
       <CardEditDialog
         isOpen={open}
         onDialogChange={setOpen}
-        showTrigger={false}
         task={{
           id: 0,
-          order: 0,
           description: "",
           dueDate: "",
           name: "",
