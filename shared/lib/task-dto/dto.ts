@@ -5,9 +5,9 @@ import {
   IsNumber,
   IsOptional,
   MaxLength,
-} from 'class-validator';
+} from "class-validator";
 import { Priority } from "./priority";
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from "@nestjs/mapped-types";
 
 export class CreateTaskDto {
   @MaxLength(128)
@@ -27,11 +27,16 @@ export class CreateTaskDto {
   order: number;
 
   @IsInt()
-  taskListId: number;
+  listId: number;
 }
 
 export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
 
-export class Task extends CreateTaskDto {
+export class Task {
   id: number;
+  name: string;
+  description: string;
+  dueDate?: string;
+  priority: Priority;
+  order: number;
 }

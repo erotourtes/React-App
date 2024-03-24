@@ -26,6 +26,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@redux/*": [
+        "./src/redux/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
       ]
     }
   },

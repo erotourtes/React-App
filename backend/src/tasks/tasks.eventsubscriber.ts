@@ -3,7 +3,6 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-  RemoveEvent,
   UpdateEvent,
 } from 'typeorm';
 import { Task } from './tasks.entity';
@@ -52,10 +51,10 @@ export class TaskSubscriber implements EntitySubscriberInterface {
     );
   }
 
-  afterRemove(event: RemoveEvent<Task>) {
-    this.historyService.create(
-      { actionType: ActionType.DELETE },
-      event.entity.id,
-    );
-  }
+  // beforeRemove(event: RemoveEvent<Task>) {
+  //   this.historyService.create(
+  //     { actionType: ActionType.DELETE },
+  //     event.databaseEntity.id,
+  //   );
+  // }
 }

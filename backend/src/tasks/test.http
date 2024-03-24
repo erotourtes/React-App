@@ -6,13 +6,13 @@ Content-Type: application/json
   "description": "Task Description",
   "dueDate": "2024-03-25T12:00:00Z",
   "priority": "low",
-  "order": 0,
-  "taskListId": 1
+  "order": 1,
+  "listId": 1
 }
 
 ###
 
-GET http://localhost:3000/tasks
+GET http://localhost:3000/tasks?listId=1
 
 ###
 

@@ -1,20 +1,36 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { CreateTaskDto } from "@shared/dtos";
-
-type TaskT = CreateTaskDto & { id: number };
+import { TaskT, TaskListT } from "@shared/dtos";
 
 export const tasksApi = createApi({
   reducerPath: "tasksApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
   endpoints: (builder) => ({
-    getAllTaskLists: builder.query<TaskT[], void>({
+    getAllTaskLists: builder.query<TaskListT[], void>({
       query: () => `task-lists`,
     }),
-    getAllTasks: builder.query<TaskT[], void>({
-      query: () => `tasks`,
+    getTasksForList: builder.query<TaskT[], number>({
+      query: (list: number) => `tasks/?listId=${list}`,
+    }),
+    deleteTask: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `tasks/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addTask: builder.mutation<TaskT, Partial<TaskT>>({
+      query: (task) => ({
+        url: `tasks`,
+        method: "POST",
+        body: task,
+      }),
     }),
   }),
 });
 
-export const { useGetAllTaskListsQuery, useGetAllTasksQuery } = tasksApi;
+export const {
+  useGetAllTaskListsQuery,
+  useGetTasksForListQuery,
+  useDeleteTaskMutation,
+  useAddTaskMutation,
+} = tasksApi;

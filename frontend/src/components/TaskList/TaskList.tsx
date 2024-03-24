@@ -1,47 +1,36 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../ui/dropdown-menu";
-import { EllipsisVertical, Pencil, Plus, Trash2 } from "lucide-react";
-import { PopupIcon } from "../popmenu-utils";
-import { Button } from "../ui/button";
+import { Button } from "@components/ui/button";
 import TaskCard from "./TaskCard";
+import { TaskListT } from "@shared/dtos";
+import ListHeader from "./ListHeader";
+import { Plus } from "lucide-react";
+import {
+  useGetAllTaskListsQuery,
+  useGetTasksForListQuery,
+} from "@redux/apiSlice";
+import AddTaskBtn from "@/components/TaskList/AddTaskBtn";
 
 function TaskList() {
+  const { data: lists = [] } = useGetAllTaskListsQuery();
+
+  return (
+    <div className="flex gap-10">
+      {lists.map((list) => (
+        <ListColumn key={list.id} list={list} />
+      ))}
+    </div>
+  );
+}
+
+function ListColumn({ list }: { list: TaskListT }) {
+  const { data: tasks = [] } = useGetTasksForListQuery(list.id);
+
   return (
     <div className="w-[250px] space-y-3">
-      <div className="flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
-        <p>To Do</p>
-        <div className="flex gap-4">
-          <p>45</p>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
-              <EllipsisVertical />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <PopupIcon icon={<Pencil />} />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <PopupIcon icon={<Plus />} />
-                Add new card
-              </DropdownMenuItem>
-              <DropdownMenuItem className="des-btn focus:des-btn-rev">
-                <PopupIcon icon={<Trash2 />} />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-      <Button variant="outline" className="w-full gap-2 border-dashed border-2">
-        <Plus />
-        Add new card
-      </Button>
-      <TaskCard />
+      <ListHeader list={list} />
+      <AddTaskBtn listId={list.id} />
+      {tasks.map((task) => (
+        <TaskCard key={task.id} task={task} />
+      ))}
     </div>
   );
 }

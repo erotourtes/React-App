@@ -8,5 +8,6 @@ import { TaskListsController } from './task-lists.controller';
   imports: [TypeOrmModule.forFeature([TaskList])],
   providers: [TaskListsService],
   controllers: [TaskListsController],
+  exports: [TaskListsService],
 })
 export class TaskListModule {}

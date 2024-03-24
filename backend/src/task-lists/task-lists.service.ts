@@ -15,6 +15,10 @@ export class TaskListsService {
     return this.taskListsRepository.find();
   }
 
+  async findOne(id: number): Promise<TaskList> {
+    return this.taskListsRepository.findOne({ where: { id } });
+  }
+
   async create(dto: CreateTaskListDto): Promise<TaskList> {
     const newTaskList = this.taskListsRepository.create({ ...dto });
     return await this.taskListsRepository.save(newTaskList);

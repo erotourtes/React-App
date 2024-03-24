@@ -29,6 +29,6 @@ export class Task {
   order: number;
 
   @ManyToOne(() => TaskList, (taskList) => taskList.tasks)
-  @JoinColumn({ name: 'taskListId' })
-  taskList: TaskList;
+  @JoinColumn({ name: 'listId' })
+  list: TaskList;
 }
