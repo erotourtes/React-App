@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { TaskT, TaskListT, CreateTaskListDto } from "@shared/dtos";
+import {
+  TaskT,
+  TaskListT,
+  CreateTaskListDto,
+  CreateTaskDto,
+} from "@shared/dtos";
 
 export const tasksApi = createApi({
   reducerPath: "tasksApi",
@@ -25,11 +30,11 @@ export const tasksApi = createApi({
         method: "DELETE",
       }),
     }),
-    addTask: builder.mutation<TaskT, Partial<TaskT>>({
+    createNewTask: builder.mutation<TaskT, CreateTaskDto>({
       query: (task) => ({
         url: `tasks`,
         method: "POST",
-        body: task,
+        body: { ...task }, // Wut, need to destructure?
       }),
     }),
   }),
@@ -39,6 +44,6 @@ export const {
   useGetAllTaskListsQuery,
   useGetTasksForListQuery,
   useDeleteTaskMutation,
-  useAddTaskMutation,
+  useCreateNewTaskMutation,
   useCreateNewListMutation,
 } = tasksApi;

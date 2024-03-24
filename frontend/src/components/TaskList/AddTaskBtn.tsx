@@ -1,6 +1,6 @@
 import TaskEditDialog from "@/components/TaskList/TaskEditDialog";
 import { Button } from "@/components/ui/button";
-import { TaskListT, TaskPriority } from "@shared/dtos";
+import { TaskListT } from "@shared/dtos";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -21,13 +21,6 @@ const AddTaskBtn = ({ list }: { list: TaskListT }) => {
         isOpen={open}
         onDialogChange={setOpen}
         selectedListId={list.id}
-        task={{
-          id: 0,
-          description: "",
-          dueDate: "",
-          name: "",
-          priority: TaskPriority.LOW,
-        }}
       />
     </>
   );

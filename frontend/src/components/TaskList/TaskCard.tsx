@@ -47,7 +47,6 @@ function TaskCard({ task }: { task: TaskT }) {
                   if (!open) setOpenMenu(false);
                   setOpenDialog(open);
                 }}
-                task={task}
               >
                 <PopupIcon icon={<Pencil />} />
                 Edit

@@ -1,4 +1,5 @@
 import { TaskForm } from "@/components/TaskList/TaskForm";
+import { useCreateNewTaskMutation } from "@/redux/apiSlice";
 import {
   Dialog,
   DialogClose,
@@ -6,14 +7,13 @@ import {
   DialogTrigger,
 } from "@components/ui/dialog";
 
-import { CreateTaskDto, TaskT } from "@shared/dtos";
+import { CreateTaskDto } from "@shared/dtos";
 import { X } from "lucide-react";
 
 type TaskDialogProps = {
   onDialogChange: (open: boolean) => void;
   isOpen: boolean;
   children?: React.ReactNode;
-  task: TaskT;
   selectedListId: number;
 };
 
@@ -23,8 +23,11 @@ const TaskDialog = ({
   children,
   selectedListId,
 }: TaskDialogProps) => {
+  const [createNewTask] = useCreateNewTaskMutation();
   function onSubmit(data: CreateTaskDto) {
-    alert(data);
+    console.log(data);
+    createNewTask(data);
+    onDialogChange(false);
   }
   return (
     <Dialog onOpenChange={onDialogChange} open={isOpen}>
