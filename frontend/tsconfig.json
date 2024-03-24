@@ -22,6 +22,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     /* Custom */
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [

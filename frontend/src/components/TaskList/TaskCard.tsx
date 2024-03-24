@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import CardEditDialog from "./CardEditDialog";
+import TaskEditDialog from "./TaskEditDialog";
 import { strDateFormat } from "@/utils/utils";
 
 function TaskCard({ task }: { task: TaskT }) {
@@ -41,7 +41,7 @@ function TaskCard({ task }: { task: TaskT }) {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <CardEditDialog
+              <TaskEditDialog
                 isOpen={openDialog}
                 onDialogChange={(open) => {
                   if (!open) setOpenMenu(false);
@@ -51,7 +51,7 @@ function TaskCard({ task }: { task: TaskT }) {
               >
                 <PopupIcon icon={<Pencil />} />
                 Edit
-              </CardEditDialog>
+              </TaskEditDialog>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => deleteTask(task.id)}
