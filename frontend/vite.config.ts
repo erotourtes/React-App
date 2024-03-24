@@ -4,9 +4,6 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    include: ["@shared/dtos"],
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
