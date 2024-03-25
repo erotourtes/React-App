@@ -17,11 +17,13 @@ const AddTaskBtn = ({ list }: { list: TaskListT }) => {
         <Plus />
         Add new card
       </Button>
-      <AddTaskDialog
-        isOpen={open}
-        onDialogChange={setOpen}
-        selectedListId={list.id}
-      />
+      {open && (
+        <AddTaskDialog
+          isOpen={open}
+          onDialogChange={setOpen}
+          selectedListId={list.id}
+        />
+      )}
     </>
   );
 };
