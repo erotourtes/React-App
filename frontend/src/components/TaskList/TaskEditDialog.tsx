@@ -1,12 +1,10 @@
+import MyDialog from "@/components/MyDialog";
 import { TaskForm } from "@/components/TaskList/TaskForm";
 import {
   useCreateNewTaskMutation,
   useUpdateTaskMutation,
 } from "@/redux/apiSlice";
-import { Dialog, DialogClose, DialogContent } from "@components/ui/dialog";
-
 import { CreateTaskDto, TaskT } from "@shared/dtos";
-import { X } from "lucide-react";
 import { useState } from "react";
 
 type TaskDialogProps = {
@@ -19,47 +17,6 @@ type TaskDialogProps = {
   onSubmit: (data: CreateTaskDto) => void;
 };
 
-const TaskDialog = ({
-  onDialogChange,
-  isOpen,
-  isEdit,
-  onEditRequest,
-  selectedListId,
-  task,
-  onSubmit,
-}: TaskDialogProps) => {
-  function submit(data: CreateTaskDto) {
-    onSubmit(data);
-    onDialogChange(false);
-  }
-
-  return (
-    <Dialog onOpenChange={onDialogChange} open={isOpen}>
-      <DialogContent className="overflow-hidden p-0 border-0 min-w-[90vw] min-h-[90vh]">
-        <div>
-          <div className="flex h-[50px] bg-primary text-primary-foreground items-center justify-end p-3">
-            <DialogClose
-              asChild
-              className="cursor-pointer hover:text-destructive"
-            >
-              <X />
-            </DialogClose>
-          </div>
-          <div className="container">
-            <TaskForm
-              onSubmit={submit}
-              edit={isEdit}
-              onEditRequest={onEditRequest}
-              task={task}
-              listId={selectedListId}
-            />
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const EditTaskDialog = ({
   onDialogChange,
   isOpen,
@@ -70,19 +27,26 @@ const EditTaskDialog = ({
   const [isEdit, setIsEdit] = useState(editMode);
   const [update] = useUpdateTaskMutation();
 
+  const dialogChange = (open: boolean) => {
+    setIsEdit(false);
+    onDialogChange(open);
+  };
+
+  const submit = (data: CreateTaskDto) => {
+    update({ ...data, id: task!.id });
+    onDialogChange(false);
+  };
+
   return (
-    <TaskDialog
-      onSubmit={(data) => update({ ...data, id: task!.id })}
-      onDialogChange={(open) => {
-        setIsEdit(false);
-        onDialogChange(open);
-      }}
-      isOpen={isOpen}
-      isEdit={isEdit}
-      onEditRequest={() => setIsEdit(true)}
-      selectedListId={selectedListId}
-      task={task}
-    />
+    <MyDialog isOpen={isOpen} onDialogChange={dialogChange}>
+      <TaskForm
+        onSubmit={submit}
+        edit={isEdit}
+        onEditRequest={() => setIsEdit(true)}
+        task={task}
+        listId={selectedListId}
+      />
+    </MyDialog>
   );
 };
 
@@ -93,14 +57,15 @@ const AddTaskDialog = ({
 }: Omit<TaskDialogProps, "task" | "onSubmit">) => {
   const [create] = useCreateNewTaskMutation();
 
+  const submit = (data: CreateTaskDto) => {
+    create(data);
+    onDialogChange(false);
+  };
+
   return (
-    <TaskDialog
-      onSubmit={create}
-      onDialogChange={onDialogChange}
-      isOpen={isOpen}
-      isEdit={true}
-      selectedListId={selectedListId}
-    />
+    <MyDialog isOpen={isOpen} onDialogChange={onDialogChange}>
+      <TaskForm onSubmit={submit} edit={true} listId={selectedListId} />
+    </MyDialog>
   );
 };
 
