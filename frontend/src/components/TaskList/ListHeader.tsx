@@ -7,8 +7,20 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-import { TaskListT } from "@shared/dtos";
+import EditListDialog from "@/components/TaskList/EditListDialog";
 import { AddTaskDialog } from "@/components/TaskList/TaskEditDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { TaskListT } from "@shared/dtos";
 import { useState } from "react";
 
 function ListHeader({
@@ -19,6 +31,11 @@ function ListHeader({
   taskCount: number;
 }) {
   const [open, setOpen] = useState(false);
+  const [editDialog, setEditDialog] = useState(false);
+
+  const deleteList = () => {
+    console.log("delete list");
+  };
 
   return (
     <div className="flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
@@ -30,7 +47,7 @@ function ListHeader({
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setEditDialog(true)}>
               <PopupIcon icon={<Pencil />} />
               Edit
             </DropdownMenuItem>
@@ -38,9 +55,11 @@ function ListHeader({
               <PopupIcon icon={<Plus />} />
               Add new card
             </DropdownMenuItem>
-            <DropdownMenuItem className="des-btn focus:des-btn-rev">
-              <PopupIcon icon={<Trash2 />} />
-              Delete
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              className="des-btn focus:des-btn-rev"
+            >
+              <DeleteBtn onConfirm={deleteList} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -52,8 +71,40 @@ function ListHeader({
           selectedListId={list.id}
         />
       )}
+      {editDialog && (
+        <EditListDialog
+          open={editDialog}
+          onDialogChange={setEditDialog}
+          list={list}
+          onSubmit={() => {}}
+        />
+      )}
     </div>
   );
 }
+
+const DeleteBtn = ({ onConfirm }: { onConfirm: () => void }) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger className="flex">
+        <PopupIcon icon={<Trash2 />} />
+        Delete
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete the list
+            as well as ALL your tasks in it.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
 
 export default ListHeader;
