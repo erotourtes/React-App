@@ -39,6 +39,7 @@ function TaskCard({
 }) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [editMode, setEditMode] = useState(true);
 
   const { data: taskList = [] } = useGetAllTaskListsQuery();
   const [deleteTask] = useDeleteTaskMutation();
@@ -47,11 +48,21 @@ function TaskCard({
     e.preventDefault();
     setOpenDialog(true);
     setOpenMenu(false);
+    setEditMode(true);
+  };
+
+  const onCardPressed = () => {
+    setOpenDialog(true);
+    setOpenMenu(false);
+    setEditMode(false);
   };
 
   return (
-    <Card>
-      <CardHeader className="p-3 pb-1 flex-row justify-between">
+    <Card className="hover:border-primary">
+      <CardHeader
+        onClick={onCardPressed}
+        className="p-3 pb-1 flex-row justify-between"
+      >
         {task.name}
         <DropdownMenu onOpenChange={setOpenMenu} open={openMenu}>
           <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
@@ -72,7 +83,10 @@ function TaskCard({
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
-      <CardContent className="p-3 pt-0 flex flex-col gap-y-3">
+      <CardContent
+        onClick={onCardPressed}
+        className="p-3 pt-0 flex flex-col gap-y-3"
+      >
         <p className="text-[0.9rem] opacity-grayish text-ellipsis overflow-hidden line-clamp-1">
           {task.description}
         </p>
@@ -110,6 +124,7 @@ function TaskCard({
           onDialogChange={(open) => setOpenDialog(open)}
           task={task}
           selectedListId={selectedList.id}
+          editMode={editMode}
         />
       )}
     </Card>

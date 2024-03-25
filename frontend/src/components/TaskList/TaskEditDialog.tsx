@@ -65,8 +65,9 @@ const EditTaskDialog = ({
   isOpen,
   selectedListId,
   task,
-}: Omit<TaskDialogProps, "onSubmit">) => {
-  const [isEdit, setIsEdit] = useState(true);
+  editMode = true,
+}: Omit<TaskDialogProps, "onSubmit"> & { editMode: boolean }) => {
+  const [isEdit, setIsEdit] = useState(editMode);
   const [update] = useUpdateTaskMutation();
 
   return (
