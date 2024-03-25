@@ -74,7 +74,7 @@ export function TaskForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormContext.Provider value={{ form, edit: edit == true }}>
           <FormName onEditRequest={onEditRequest} />
-          <FormStatus task={task} />
+          <FormStatus listId={listId} />
           <FormDate />
           <FormPriority />
           <FormDescription />
@@ -122,10 +122,10 @@ const FormName = ({ onEditRequest }: { onEditRequest?: () => void }) => {
   );
 };
 
-const FormStatus = ({ task }: { task?: TaskT }) => {
+const FormStatus = ({ listId }: { listId: number }) => {
   const { form, edit } = useContext(FormContext);
   const { data: lists = [] } = useGetAllTaskListsQuery();
-  const selectedList = lists?.find((list) => list.id === task?.list.id);
+  const selectedList = lists?.find((list) => list.id === listId);
 
   return (
     <FormField
@@ -137,10 +137,10 @@ const FormStatus = ({ task }: { task?: TaskT }) => {
             <FileBarChart2 className="h-4 w-4 opacity-50" />
             Status
           </FormLabel>
-          {edit && task ? (
+          {edit ? (
             <MoveToListSelect
               placeholder={selectedList?.name}
-              task={task}
+              selectedListId={listId}
               onSelect={field.onChange}
             />
           ) : (

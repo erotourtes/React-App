@@ -97,7 +97,7 @@ function TaskCard({
         </div>
         <MoveToListSelect
           className="bg-secondary"
-          task={task}
+          selectedListId={selectedList.id}
           onSelect={(id) => updateTask({ ...task, listId: id })}
         />
       </CardContent>

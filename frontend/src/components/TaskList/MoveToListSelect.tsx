@@ -7,15 +7,13 @@ import {
   SelectValue,
 } from "../ui/select";
 
-import { TaskT } from "@shared/dtos";
-
 const MoveToListSelect = ({
-  task,
+  selectedListId,
   onSelect,
   className,
   placeholder,
 }: {
-  task: TaskT;
+  selectedListId: number;
   onSelect: (id: number) => void;
   className?: string;
   placeholder?: string;
@@ -29,7 +27,7 @@ const MoveToListSelect = ({
       <SelectContent>
         {taskList.map((list) => (
           <SelectItem
-            disabled={list.id == task.list.id}
+            disabled={list.id == selectedListId}
             key={list.id}
             value={list.id.toString()}
           >
