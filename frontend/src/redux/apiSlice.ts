@@ -5,6 +5,7 @@ import {
   TaskListT,
   CreateTaskListDto,
   CreateTaskDto,
+  UpdateTaskDto,
 } from "@shared/dtos";
 
 export const tasksApi = createApi({
@@ -24,7 +25,7 @@ export const tasksApi = createApi({
     getTasksForList: builder.query<TaskT[], number>({
       query: (list: number) => `tasks/?listId=${list}`,
     }),
-    updateTask: builder.mutation<TaskT, TaskT>({
+    updateTask: builder.mutation<TaskT, UpdateTaskDto>({
       query: (task) => ({
         url: `tasks/${task.id}`,
         method: "PATCH",

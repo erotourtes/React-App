@@ -26,7 +26,10 @@ export class CreateTaskDto {
   listId: number;
 }
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+  @IsInt()
+  id: number;
+}
 
 export type Task = {
   id: number;
@@ -34,4 +37,5 @@ export type Task = {
   description: string;
   dueDate?: string;
   priority: Priority;
+  list: { id: number };
 };

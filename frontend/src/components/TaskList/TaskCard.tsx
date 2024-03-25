@@ -41,7 +41,6 @@ function TaskCard({
   const [openDialog, setOpenDialog] = useState(false);
   const [editMode, setEditMode] = useState(true);
 
-  const { data: taskList = [] } = useGetAllTaskListsQuery();
   const [deleteTask] = useDeleteTaskMutation();
 
   const onEditPressed = (e: Event) => {
@@ -101,22 +100,7 @@ function TaskCard({
         <div>
           <Priority priority={task.priority} />
         </div>
-        <Select>
-          <SelectTrigger className="w-full bg-secondary">
-            <SelectValue placeholder="Move to:" />
-          </SelectTrigger>
-          <SelectContent>
-            {taskList.map((list) => (
-              <SelectItem
-                disabled={list.id == selectedList.id}
-                key={list.id}
-                value={list.id.toString()}
-              >
-                {list.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <MoveTo task={task} />
       </CardContent>
       {openDialog && (
         <EditTaskDialog
@@ -130,5 +114,28 @@ function TaskCard({
     </Card>
   );
 }
+
+const MoveTo = ({ task }: { task: TaskT }) => {
+  const { data: taskList = [] } = useGetAllTaskListsQuery();
+  console.log(task);
+  return (
+    <Select>
+      <SelectTrigger className="w-full bg-secondary">
+        <SelectValue placeholder="Move to:" />
+      </SelectTrigger>
+      <SelectContent>
+        {taskList.map((list) => (
+          <SelectItem
+            disabled={list.id == task.list.id}
+            key={list.id}
+            value={list.id.toString()}
+          >
+            {list.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+};
 
 export default TaskCard;

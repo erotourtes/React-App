@@ -20,14 +20,23 @@ export class TasksService {
     private listService: TaskListsService,
   ) {}
 
-  async findAll(id?: number): Promise<TaskT[]> {
-    return this.taskRepository.find({
-      where: { list: { id } },
-    });
+  async findAll(listId?: number): Promise<TaskT[]> {
+    const query = this.taskRepository
+      .createQueryBuilder('task')
+      .select(['task', 'list.id'])
+      .leftJoin('task.list', 'list');
+    if (listId) query.where('list.id = :id', { id: listId });
+
+    return await query.getMany();
   }
 
   async findOne(id: number): Promise<TaskT> {
-    return this.taskRepository.findOne({ where: { id } });
+    const query = this.taskRepository
+      .createQueryBuilder('task')
+      .select(['task', 'list.id'])
+      .leftJoin('task.list', 'list')
+      .where('task.id = :id', { id });
+    return await query.getOne();
   }
 
   async create(dto: CreateTaskDto): Promise<TaskT> {
