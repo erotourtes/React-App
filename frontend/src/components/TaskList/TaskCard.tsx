@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import {
   useDeleteTaskMutation,
-  useGetAllTaskListsQuery,
+  useUpdateTaskMutation,
 } from "../../redux/apiSlice";
 import { PopupIcon } from "../popmenu-utils";
 import Priority from "../Priority";
@@ -20,15 +20,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { EditTaskDialog } from "./TaskEditDialog";
 import { strDateFormat } from "@/utils/utils";
+import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
 
 function TaskCard({
   task,
@@ -42,6 +36,7 @@ function TaskCard({
   const [editMode, setEditMode] = useState(true);
 
   const [deleteTask] = useDeleteTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
 
   const onEditPressed = (e: Event) => {
     e.preventDefault();
@@ -100,7 +95,11 @@ function TaskCard({
         <div>
           <Priority priority={task.priority} />
         </div>
-        <MoveTo task={task} />
+        <MoveToListSelect
+          className="bg-secondary"
+          task={task}
+          onSelect={(id) => updateTask({ ...task, listId: id })}
+        />
       </CardContent>
       {openDialog && (
         <EditTaskDialog
@@ -114,28 +113,5 @@ function TaskCard({
     </Card>
   );
 }
-
-const MoveTo = ({ task }: { task: TaskT }) => {
-  const { data: taskList = [] } = useGetAllTaskListsQuery();
-  console.log(task);
-  return (
-    <Select>
-      <SelectTrigger className="w-full bg-secondary">
-        <SelectValue placeholder="Move to:" />
-      </SelectTrigger>
-      <SelectContent>
-        {taskList.map((list) => (
-          <SelectItem
-            disabled={list.id == task.list.id}
-            key={list.id}
-            value={list.id.toString()}
-          >
-            {list.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-};
 
 export default TaskCard;

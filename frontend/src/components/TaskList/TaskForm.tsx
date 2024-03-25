@@ -27,10 +27,12 @@ import {
 } from "@components/ui/select";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { CreateTaskDto, TaskPriority, TaskT } from "@shared/dtos";
-import { BarChart, CalendarIcon, Pencil } from "lucide-react";
+import { BarChart, CalendarIcon, FileBarChart2, Pencil } from "lucide-react";
 import { useContext, createContext } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { H3 } from "@/components/typography";
+import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
+import { useGetAllTaskListsQuery } from "@/redux/apiSlice";
 
 interface TaskFormProps {
   task?: TaskT;
@@ -72,6 +74,7 @@ export function TaskForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormContext.Provider value={{ form, edit: edit == true }}>
           <FormName onEditRequest={onEditRequest} />
+          <FormStatus task={task} />
           <FormDate />
           <FormPriority />
           <FormDescription />
@@ -113,6 +116,36 @@ const FormName = ({ onEditRequest }: { onEditRequest?: () => void }) => {
             </div>
           )}
           <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
+const FormStatus = ({ task }: { task?: TaskT }) => {
+  const { form, edit } = useContext(FormContext);
+  const { data: lists = [] } = useGetAllTaskListsQuery();
+  const selectedList = lists?.find((list) => list.id === task?.list.id);
+
+  return (
+    <FormField
+      control={form.control}
+      name="listId"
+      render={({ field }) => (
+        <FormItem className="flex items-center">
+          <FormLabel className="flex gap-3 min-w-[150px] max-w-[150px] pt-2">
+            <FileBarChart2 className="h-4 w-4 opacity-50" />
+            Status
+          </FormLabel>
+          {edit && task ? (
+            <MoveToListSelect
+              placeholder={selectedList?.name}
+              task={task}
+              onSelect={field.onChange}
+            />
+          ) : (
+            <p className="pl-4">{selectedList?.name}</p>
+          )}
         </FormItem>
       )}
     />
@@ -180,7 +213,7 @@ const FormPriority = () => {
       render={({ field }) => (
         <FormItem className="flex items-center">
           <FormLabel className="flex gap-3 max-w-[150px] min-w-[150px] items-center pt-2">
-            <BarChart />
+            <BarChart className="opacity-50" />
             Priority
           </FormLabel>
           {edit ? (

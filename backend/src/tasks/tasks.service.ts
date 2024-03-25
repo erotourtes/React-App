@@ -7,7 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './tasks.entity';
-import { CreateTaskDto, TaskT, UpdateTaskDto } from '@shared/dtos';
+import { CreateTaskDto, TaskListT, TaskT, UpdateTaskDto } from '@shared/dtos';
 import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
@@ -58,9 +58,16 @@ export class TasksService {
     if (!foundTask)
       throw new NotFoundException(`Task with id ${taskId} not found`);
 
+    let list: TaskListT;
+    if (task.listId) {
+      list = await this.listService.findOne(task.listId);
+      if (!list) throw new NotFoundException(`List with id ${task.listId} not found`);
+    }
+
     return this.taskRepository.save({
       ...foundTask,
       ...task,
+      list: task.listId ? list : foundTask.list,
     });
   }
 
