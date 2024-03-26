@@ -66,7 +66,7 @@ function TaskCard({
         onClick={onCardPressed}
         className="p-3 pb-1 flex-row justify-between"
       >
-        {task.name}
+        <p>{task.name}</p>
         <DropdownMenu onOpenChange={setOpenMenu} open={openMenu}>
           <DropdownMenuTrigger
             disabled={disabled}
@@ -98,11 +98,13 @@ function TaskCard({
         </p>
         <div className="flex gap-3">
           <FileBarChart />
-          {selectedList.name}
+          <span className="opacity-grayish">{selectedList.name}</span>
         </div>
         <div className="flex gap-3">
           <Calendar />
-          <span className="opacity-grayish">{strDateFormat(task.dueDate)}</span>
+          <span className="opacity-grayish">
+            {strDateFormat(task.dueDate) || "Not set"}
+          </span>
         </div>
         <div>
           <Priority priority={task.priority} />
