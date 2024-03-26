@@ -34,4 +34,15 @@ export class TaskHistoryService {
       record,
     });
   }
+
+  async find(id: number) {
+    return await this.historyRepository.find({
+      where: { task: { id } },
+      order: { timestamp: 'DESC' },
+    });
+  }
+
+  async findAll() {
+    return await this.historyRepository.find();
+  }
 }
