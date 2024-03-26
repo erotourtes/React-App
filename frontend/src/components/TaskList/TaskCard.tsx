@@ -53,8 +53,8 @@ function TaskCard({
 
   const onCardPressed = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setOpenMenu(false);
     setEditMode(false);
+    setOpenDialog(true);
   };
 
   return (
