@@ -112,7 +112,9 @@ function TaskCard({
         <MoveToListSelect
           className="bg-secondary"
           selectedListId={selectedList.id}
-          onSelect={(id) => updateTask({ ...task, listId: id })}
+          onSelect={(id) =>
+            updateTask({ oldTask: task, updatedTask: { ...task, listId: id } })
+          }
           disabled={disabled}
         />
       </CardContent>

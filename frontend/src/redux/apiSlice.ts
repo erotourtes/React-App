@@ -20,25 +20,61 @@ const tasksApi = api.injectEndpoints({
     getTasksForList: builder.query<TaskT[], number>({
       query: (list: number) => `tasks/?listId=${list}`,
     }),
-    updateTask: builder.mutation<TaskT, UpdateTaskDto & { listId: number }>({
-      query: (task) => ({
-        url: `tasks/${task.id}`,
+    updateTask: builder.mutation<
+      TaskT,
+      { oldTask: TaskT; updatedTask: UpdateTaskDto }
+    >({
+      query: ({ updatedTask }) => ({
+        url: `tasks/${updatedTask.id}`,
         method: "PATCH",
-        body: { ...task },
+        body: { ...updatedTask },
       }),
-      onQueryStarted(task, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          tasksApi.util.updateQueryData(
-            "getTasksForList",
-            task.listId,
-            (tasks) =>
-              tasks.map((t) => (t.id === task.id ? { ...t, ...task } : t))
-          )
-        );
-        queryFulfilled.catch(() => {
-          console.log("Error updating task");
-          patchResult.undo();
-        });
+      onQueryStarted({ oldTask, updatedTask }, { dispatch, queryFulfilled }) {
+        // TODO: REFACTOR THIS
+        const isTaskListSame =
+          !updatedTask.listId || updatedTask.listId === oldTask.list.id;
+        if (isTaskListSame) {
+          const patchResult = dispatch(
+            tasksApi.util.updateQueryData(
+              "getTasksForList",
+              oldTask.list.id,
+              (tasks) =>
+                tasks.map((t) =>
+                  t.id === updatedTask.id ? { ...t, ...updatedTask } : t
+                )
+            )
+          );
+          queryFulfilled.catch(() => {
+            console.log("Error updating task");
+            patchResult.undo();
+          });
+        } else {
+          const patcheRemove = dispatch(
+            tasksApi.util.updateQueryData(
+              "getTasksForList",
+              oldTask.list.id,
+              (tasks) => {
+                return tasks.filter((t) => t.id !== updatedTask.id);
+              }
+            )
+          );
+          const newTask: TaskT = {
+            ...oldTask,
+            list: { id: updatedTask.listId! },
+          };
+          const patchAdd = dispatch(
+            tasksApi.util.updateQueryData(
+              "getTasksForList",
+              updatedTask.listId!,
+              (tasks) => [...tasks, newTask]
+            )
+          );
+          queryFulfilled.catch(() => {
+            console.log("Error updating task");
+            patcheRemove.undo();
+            patchAdd.undo();
+          });
+        }
       },
     }),
     deleteTask: builder.mutation<void, TaskT>({

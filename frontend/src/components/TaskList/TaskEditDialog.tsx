@@ -24,6 +24,7 @@ const EditTaskDialog = ({
   task,
   editMode = true,
 }: Omit<TaskDialogProps, "onSubmit"> & { editMode: boolean }) => {
+  if (!task) throw new Error("Task is required");
   const [isEdit, setIsEdit] = useState(editMode);
   const [update] = useUpdateTaskMutation();
 
@@ -33,7 +34,8 @@ const EditTaskDialog = ({
   };
 
   const submit = (data: CreateTaskDto) => {
-    update({ ...data, id: task!.id, listId: selectedListId });
+    const updatedTask = { ...data, id: task.id };
+    update({ oldTask: task, updatedTask });
     onDialogChange(false);
   };
 
