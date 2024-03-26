@@ -1,3 +1,4 @@
+import { HistoryActionType } from '@shared/dtos';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,11 +6,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-export enum ActionType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-}
+export { HistoryActionType };
 
 @Entity()
 export class History {
@@ -18,7 +15,7 @@ export class History {
 
   @Column({
     type: 'enum',
-    enum: ActionType,
+    enum: HistoryActionType,
   })
   actionType: string;
 

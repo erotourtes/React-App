@@ -9,7 +9,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Task } from 'src/tasks/tasks.entity';
 import { TaskHistoryService } from './tasks.service';
-import { ActionType } from '../history.entity';
+import { HistoryActionType } from '../history.entity';
 
 @Injectable()
 @EventSubscriber()
@@ -27,7 +27,7 @@ export class TaskHistoryDbSubscriber implements EntitySubscriberInterface {
 
   afterInsert(event: InsertEvent<Task>) {
     this.historyService.create({
-      actionType: ActionType.CREATE,
+      actionType: HistoryActionType.CREATE,
       recordId: event.entity.id,
     });
   }
@@ -39,7 +39,7 @@ export class TaskHistoryDbSubscriber implements EntitySubscriberInterface {
     const isListChanged = newTask.list.id !== event.databaseEntity.list.id;
     if (isListChanged) {
       this.historyService.create({
-        actionType: ActionType.UPDATE,
+        actionType: HistoryActionType.UPDATE,
         fieldName: 'list',
         oldValue: event.databaseEntity.list.id.toString(),
         newValue: newTask.list.id.toString(),
@@ -50,7 +50,7 @@ export class TaskHistoryDbSubscriber implements EntitySubscriberInterface {
     const updated = event.updatedColumns.entries();
     for (const [, value] of updated) {
       this.historyService.create({
-        actionType: ActionType.UPDATE,
+        actionType: HistoryActionType.UPDATE,
         fieldName: <keyof Task>value.databaseName,
         oldValue: event.databaseEntity[value.databaseName],
         newValue: newTask[value.databaseName],
@@ -61,7 +61,7 @@ export class TaskHistoryDbSubscriber implements EntitySubscriberInterface {
 
   handleRemove(entity: Task) {
     this.historyService.create({
-      actionType: ActionType.DELETE,
+      actionType: HistoryActionType.DELETE,
       recordId: entity.id,
     });
   }

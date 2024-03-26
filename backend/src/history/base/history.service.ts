@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
-import { ActionType, History } from '../history.entity';
+import { HistoryActionType, History } from '../history.entity';
 
 export class BaseHistoryService<T> {
   logger: Logger;
@@ -12,7 +12,7 @@ export class BaseHistoryService<T> {
   }
 
   async create(record: {
-    actionType: ActionType;
+    actionType: HistoryActionType;
     fieldName?: keyof T;
     oldValue?: string;
     newValue?: string;
@@ -55,7 +55,7 @@ export class BaseHistoryService<T> {
 export abstract class BaseHistoryServiceTemplate<T> {
   abstract historyService: BaseHistoryService<T>;
   async create(record: {
-    actionType: ActionType;
+    actionType: HistoryActionType;
     fieldName?: keyof T;
     oldValue?: string;
     newValue?: string;

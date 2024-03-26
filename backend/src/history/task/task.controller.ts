@@ -12,7 +12,6 @@ export class TaskHistoryController {
 
   @Get(':taskId')
   async findEntityHistory(@Param('taskId') taskId: number) {
-    console.log('taskId', taskId);
     return this.historyService.findEntityHistory(taskId);
   }
 }
