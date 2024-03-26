@@ -17,9 +17,6 @@ export const api = createApi({
 
 const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllTaskLists: builder.query<TaskListT[], void>({
-      query: () => `task-lists`,
-    }),
     getTasksForList: builder.query<TaskT[], number>({
       query: (list: number) => `tasks/?listId=${list}`,
     }),
@@ -75,6 +72,9 @@ const tasksApi = api.injectEndpoints({
 
 const listsApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    getAllTaskLists: builder.query<TaskListT[], void>({
+      query: () => `task-lists`,
+    }),
     createNewList: builder.mutation<TaskListT, CreateTaskListDto>({
       query: (list) => ({
         url: `task-lists`,
@@ -100,14 +100,14 @@ const listsApi = api.injectEndpoints({
 });
 
 export const {
-  useGetAllTaskListsQuery,
   useGetTasksForListQuery,
-  useDeleteTaskMutation,
   useCreateNewTaskMutation,
   useUpdateTaskMutation,
+  useDeleteTaskMutation,
 } = tasksApi;
 
 export const {
+  useGetAllTaskListsQuery,
   useCreateNewListMutation,
   useUpdateNewListMutation,
   useDeleteNewListMutation,
