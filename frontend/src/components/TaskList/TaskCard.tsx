@@ -64,9 +64,9 @@ function TaskCard({
     <Card className={`hover:border-primary ${disabled && "bg-muted"}`}>
       <CardHeader
         onClick={onCardPressed}
-        className="p-3 pb-1 flex-row justify-between"
+        className="p-3 pb-1 flex-row justify-between items-center"
       >
-        <p>{task.name}</p>
+        <p className="text-ellipsis overflow-hidden w-[200px]">{task.name}</p>
         <DropdownMenu onOpenChange={setOpenMenu} open={openMenu}>
           <DropdownMenuTrigger
             disabled={disabled}
