@@ -1,28 +1,34 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TaskList } from './task-lists.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskListDto, TaskListT, UpdateTaskListDto } from '@shared/dtos';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class TaskListsService {
   constructor(
     @InjectRepository(TaskList)
     private readonly taskListsRepository: Repository<TaskList>,
+    @Inject(forwardRef(() => TasksService))
+    private readonly tasksService: TasksService,
   ) {}
 
   async findAll(): Promise<TaskListT[]> {
-    return this.taskListsRepository.find();
+    return this.taskListsRepository.find({
+      where: { isDeleted: false },
+    });
   }
 
   async findOne(id: number): Promise<TaskListT> {
-    return this.taskListsRepository.findOne({ where: { id } });
-  }
-
-  async findOneOrNull(id: number): Promise<TaskListT | null> {
-    return await this.taskListsRepository
-      .findOne({ where: { id } })
-      .catch(() => null);
+    return this.taskListsRepository.findOne({
+      where: { id, isDeleted: false },
+    });
   }
 
   async create(dto: CreateTaskListDto): Promise<TaskListT> {
@@ -31,7 +37,10 @@ export class TaskListsService {
   }
 
   async update(id: number, dto: UpdateTaskListDto): Promise<TaskListT> {
-    const taskList = await this.findOneOrNull(id);
+    const taskList = await this.taskListsRepository.findOne({
+      where: { id, isDeleted: false },
+    });
+
     if (!taskList)
       throw new NotFoundException(`Task list with id ${id} not found`);
     Object.assign(taskList, dto);
@@ -39,8 +48,16 @@ export class TaskListsService {
   }
 
   async delete(id: number) {
-    if (!(await this.findOneOrNull(id)))
-      throw new NotFoundException(`Task list with id ${id} not found`);
-    await this.taskListsRepository.delete(id);
+    // TODO: select only needed fields
+    const list = await this.taskListsRepository.findOne({ where: { id } });
+    if (!list) throw new NotFoundException(`Task list with id ${id} not found`);
+
+    list.isDeleted = true;
+    await this.taskListsRepository.save(list);
+
+    const tasks = await this.tasksService.findAllIdOnly(list.id);
+    tasks.forEach((task) => {
+      this.tasksService.delete(task.id);
+    });
   }
 }

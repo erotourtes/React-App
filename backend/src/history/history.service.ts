@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ActionType, History } from './history.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Task } from 'src/tasks/tasks.entity';
 
 @Injectable()
@@ -10,6 +10,8 @@ export class HistoryService {
     @InjectRepository(History)
     private readonly historyRepository: Repository<History>,
   ) {}
+
+  logger = new Logger(HistoryService.name);
 
   async create(
     record: {
@@ -25,5 +27,11 @@ export class HistoryService {
       task: { id: taskId },
     });
     await this.historyRepository.save(newRecord);
+
+    this.logger.log({
+      status: 'History record created',
+      taskId,
+      record,
+    });
   }
 }

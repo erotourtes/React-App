@@ -31,10 +31,10 @@ export class History {
   @Column({ length: 20, default: '' })
   fieldName: string;
 
-  @Column({ length: 100, default: '' })
+  @Column({ length: 128, default: '' })
   oldValue: string;
 
-  @Column({ length: 100, default: '' })
+  @Column({ length: 128, default: '' })
   newValue: string;
 
   @ManyToOne(() => Task, { onDelete: 'SET NULL' })

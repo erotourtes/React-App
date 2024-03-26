@@ -5,11 +5,12 @@ import { Task } from './tasks.entity';
 import { TasksController } from './tasks.controller';
 import { HistoryModule } from 'src/history/history.module';
 import { TaskListModule } from 'src/task-lists/task-lists.module';
+import { TaskHistoryManager } from './tasks.history';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Task]), HistoryModule, TaskListModule],
-  providers: [TasksService],
+  providers: [TasksService, TaskHistoryManager],
   controllers: [TasksController],
-  exports: [],
+  exports: [TasksService],
 })
 export class TaskModule {}

@@ -9,6 +9,9 @@ export class TaskList {
   @Column({ length: 128 })
   name: string;
 
+  @Column({ default: false })
+  isDeleted: boolean;
+
   @OneToMany(() => Task, (task) => task.list, { onDelete: 'CASCADE' })
   tasks: Task[];
 }

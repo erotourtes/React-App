@@ -25,6 +25,9 @@ export class Task {
   @Column({ type: 'enum', enum: TaskPriority })
   priority: TaskPriority;
 
+  @Column({ default: false })
+  isDeleted: boolean;
+
   @ManyToOne(() => TaskList, (taskList) => taskList.tasks, {
     onDelete: 'CASCADE',
   })
