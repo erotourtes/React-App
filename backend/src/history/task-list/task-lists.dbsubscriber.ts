@@ -7,15 +7,13 @@ import {
 } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { TaskListHistoryService } from './history.service';
-import { TaskList } from '../task-lists.entity';
-import { ActionType } from './history.entity';
-
-// TODO: Very similar to tasks.history.ts
+import { TaskList } from 'src/task-lists/task-lists.entity';
+import { TaskListHistoryService } from './task-list.service';
+import { ActionType } from '../history.entity';
 
 @Injectable()
 @EventSubscriber()
-export class TaskListHistoryManager implements EntitySubscriberInterface {
+export class TaskListHistoryDbSubscriber implements EntitySubscriberInterface {
   constructor(
     private readonly historyService: TaskListHistoryService,
     @InjectDataSource() readonly dataSource: DataSource,
@@ -28,10 +26,10 @@ export class TaskListHistoryManager implements EntitySubscriberInterface {
   }
 
   afterInsert(event: InsertEvent<TaskList>) {
-    this.historyService.create(
-      { actionType: ActionType.CREATE },
-      event.entity.id,
-    );
+    this.historyService.create({
+      actionType: ActionType.CREATE,
+      recordId: event.entity.id,
+    });
   }
 
   afterUpdate(event: UpdateEvent<TaskList>) {
@@ -40,19 +38,20 @@ export class TaskListHistoryManager implements EntitySubscriberInterface {
 
     const updated = event.updatedColumns.entries();
     for (const [, value] of updated) {
-      this.historyService.create(
-        {
-          actionType: ActionType.UPDATE,
-          fieldName: <keyof TaskList>value.databaseName,
-          oldValue: event.databaseEntity[value.databaseName],
-          newValue: newTask[value.databaseName],
-        },
-        event.entity.id,
-      );
+      this.historyService.create({
+        actionType: ActionType.UPDATE,
+        fieldName: <keyof TaskList>value.databaseName,
+        oldValue: event.databaseEntity[value.databaseName],
+        newValue: newTask[value.databaseName],
+        recordId: event.entity.id,
+      });
     }
   }
 
   handleRemove(entity: TaskList) {
-    this.historyService.create({ actionType: ActionType.DELETE }, entity.id);
+    this.historyService.create({
+      actionType: ActionType.DELETE,
+      recordId: entity.id,
+    });
   }
 }

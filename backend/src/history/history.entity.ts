@@ -1,10 +1,7 @@
-import { Task } from 'src/tasks/tasks.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   CreateDateColumn,
 } from 'typeorm';
 
@@ -15,7 +12,7 @@ export enum ActionType {
 }
 
 @Entity()
-export class TaskHistory {
+export class History {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,6 +25,9 @@ export class TaskHistory {
   @CreateDateColumn()
   timestamp: Date;
 
+  @Column({ length: 128, nullable: true })
+  tableName: string;
+
   @Column({ length: 20, default: '' })
   fieldName: string;
 
@@ -37,7 +37,6 @@ export class TaskHistory {
   @Column({ length: 128, default: '' })
   newValue: string;
 
-  @ManyToOne(() => Task, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'task_id' })
-  task: Task;
+  @Column()
+  recordId: number;
 }

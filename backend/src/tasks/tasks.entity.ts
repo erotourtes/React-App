@@ -8,7 +8,7 @@ import {
 import { TaskList } from 'src/task-lists/task-lists.entity';
 import { TaskPriority } from '@shared/dtos';
 
-@Entity()
+@Entity('task')
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;

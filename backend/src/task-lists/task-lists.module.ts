@@ -4,14 +4,9 @@ import { TaskList } from './task-lists.entity';
 import { TaskListsService } from './task-lists.service';
 import { TaskListsController } from './task-lists.controller';
 import { TaskModule } from 'src/tasks/tasks.module';
-import { TaskListHistoryModule } from './history/history.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([TaskList]),
-    forwardRef(() => TaskModule),
-    TaskListHistoryModule,
-  ],
+  imports: [TypeOrmModule.forFeature([TaskList]), forwardRef(() => TaskModule)],
   providers: [TaskListsService],
   controllers: [TaskListsController],
   exports: [TaskListsService],

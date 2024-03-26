@@ -7,20 +7,20 @@ import { TaskListModule } from './task-lists/task-lists.module';
 import { Task } from './tasks/tasks.entity';
 import { TaskList } from './task-lists/task-lists.entity';
 import { AppLoggerMiddleware } from './middlewares/AppLoggerMiddleware';
-import { TaskHistory } from './tasks/history/history.entity';
-import { TaskListHistory } from './task-lists/history/history.entity';
+import { History } from './history/history.entity';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env.local' }),
     TypeOrmModule.forRoot({
       ...databaseConfig(),
-      entities: [Task, TaskList, TaskHistory, TaskListHistory],
-      // subscribers: [TaskSubscriber], // Manually connecting in tasks.eventsubscriber.ts
+      entities: [Task, TaskList, History],
     }),
     TaskModule,
     TaskListModule,
     ConfigModule,
+    HistoryModule,
   ],
   controllers: [],
   providers: [],
