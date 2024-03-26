@@ -60,12 +60,44 @@ const tasksApi = api.injectEndpoints({
         });
       },
     }),
-    createNewTask: builder.mutation<TaskT, CreateTaskDto>({
+    createNewTask: builder.mutation<TaskT, CreateTaskDto & { listId: number }>({
       query: (task) => ({
         url: `tasks`,
         method: "POST",
-        body: { ...task }, // Wut, need to destructure?
+        body: { ...task }, // Wut, need to { ...destructure?
       }),
+      onQueryStarted(task, { dispatch, queryFulfilled }) {
+        const randId = -Math.floor(Math.random() * 1000);
+        const newTask: TaskT = {
+          id: randId,
+          ...task,
+          list: {
+            id: task.listId,
+          },
+        };
+        const patchResult = dispatch(
+          tasksApi.util.updateQueryData(
+            "getTasksForList",
+            task.listId,
+            (tasks) => [...tasks, newTask]
+          )
+        );
+
+        queryFulfilled
+          .then(({ data: task }) => {
+            dispatch(
+              tasksApi.util.updateQueryData(
+                "getTasksForList",
+                task.list.id,
+                (tasks) => tasks.map((t) => (t.id === randId ? task : t))
+              )
+            );
+          })
+          .catch(() => {
+            console.log("Error creating task");
+            patchResult.undo();
+          });
+      },
     }),
   }),
 });
@@ -81,6 +113,30 @@ const listsApi = api.injectEndpoints({
         method: "POST",
         body: list,
       }),
+      onQueryStarted(list, { dispatch, queryFulfilled }) {
+        const randId = -Math.floor(Math.random() * 1000);
+        const patchResult = dispatch(
+          listsApi.util.updateQueryData(
+            "getAllTaskLists",
+            undefined,
+            (lists) => [...lists, { ...list, id: randId }]
+          )
+        );
+        queryFulfilled
+          .then(({ data: list }) => {
+            dispatch(
+              listsApi.util.updateQueryData(
+                "getAllTaskLists",
+                undefined,
+                (lists) => lists.map((l) => (l.id === randId ? list : l))
+              )
+            );
+          })
+          .catch(() => {
+            console.log("Error creating list");
+            patchResult.undo();
+          });
+      },
     }),
     updateNewList: builder.mutation<UpdateTaskListDto, TaskListT>({
       query: (list) => ({
@@ -88,12 +144,34 @@ const listsApi = api.injectEndpoints({
         method: "PATCH",
         body: list,
       }),
+      onQueryStarted(list, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          listsApi.util.updateQueryData("getAllTaskLists", undefined, (lists) =>
+            lists.map((l) => (l.id === list.id ? { ...l, ...list } : l))
+          )
+        );
+        queryFulfilled.catch(() => {
+          console.log("Error updating list");
+          patchResult.undo();
+        });
+      },
     }),
     deleteNewList: builder.mutation<void, number>({
       query: (id) => ({
         url: `task-lists/${id}`,
         method: "DELETE",
       }),
+      onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          listsApi.util.updateQueryData("getAllTaskLists", undefined, (lists) =>
+            lists.filter((l) => l.id !== id)
+          )
+        );
+        queryFulfilled.catch(() => {
+          console.log("Error deleting list");
+          patchResult.undo();
+        });
+      },
     }),
   }),
   overrideExisting: false,
