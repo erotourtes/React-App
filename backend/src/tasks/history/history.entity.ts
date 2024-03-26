@@ -15,7 +15,7 @@ export enum ActionType {
 }
 
 @Entity()
-export class History {
+export class TaskHistory {
   @PrimaryGeneratedColumn()
   id: number;
 

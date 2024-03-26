@@ -5,56 +5,45 @@ import {
   InsertEvent,
   UpdateEvent,
 } from 'typeorm';
-import { Task } from './tasks.entity';
-import { ActionType } from 'src/history/history.entity';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
-import { HistoryService } from 'src/history/history.service';
+import { TaskListHistoryService } from './history.service';
+import { TaskList } from '../task-lists.entity';
+import { ActionType } from './history.entity';
+
+// TODO: Very similar to tasks.history.ts
 
 @Injectable()
 @EventSubscriber()
-export class TaskHistoryManager implements EntitySubscriberInterface {
+export class TaskListHistoryManager implements EntitySubscriberInterface {
   constructor(
-    private readonly historyService: HistoryService,
+    private readonly historyService: TaskListHistoryService,
     @InjectDataSource() readonly dataSource: DataSource,
   ) {
     dataSource.subscribers.push(this);
   }
 
   listenTo() {
-    return Task;
+    return TaskList;
   }
 
-  afterInsert(event: InsertEvent<Task>) {
+  afterInsert(event: InsertEvent<TaskList>) {
     this.historyService.create(
       { actionType: ActionType.CREATE },
       event.entity.id,
     );
   }
 
-  afterUpdate(event: UpdateEvent<Task>) {
-    const newTask = event.entity as Task;
+  afterUpdate(event: UpdateEvent<TaskList>) {
+    const newTask = event.entity as TaskList;
     if (newTask.isDeleted) return void this.handleRemove(newTask);
-
-    const isListChanged = newTask.list.id !== event.databaseEntity.list.id;
-    if (isListChanged) {
-      this.historyService.create(
-        {
-          actionType: ActionType.UPDATE,
-          fieldName: 'list',
-          oldValue: event.databaseEntity.list.id.toString(),
-          newValue: newTask.list.id.toString(),
-        },
-        event.entity.id,
-      );
-    }
 
     const updated = event.updatedColumns.entries();
     for (const [, value] of updated) {
       this.historyService.create(
         {
           actionType: ActionType.UPDATE,
-          fieldName: <keyof Task>value.databaseName,
+          fieldName: <keyof TaskList>value.databaseName,
           oldValue: event.databaseEntity[value.databaseName],
           newValue: newTask[value.databaseName],
         },
@@ -63,7 +52,7 @@ export class TaskHistoryManager implements EntitySubscriberInterface {
     }
   }
 
-  handleRemove(entity: Task) {
+  handleRemove(entity: TaskList) {
     this.historyService.create({ actionType: ActionType.DELETE }, entity.id);
   }
 }

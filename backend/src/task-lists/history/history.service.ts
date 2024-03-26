@@ -1,22 +1,22 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ActionType, History } from './history.entity';
+import { ActionType, TaskListHistory } from './history.entity';
 import { Injectable, Logger } from '@nestjs/common';
-import { Task } from 'src/tasks/tasks.entity';
+import { TaskList } from '../task-lists.entity';
 
 @Injectable()
-export class HistoryService {
+export class TaskListHistoryService {
   constructor(
-    @InjectRepository(History)
-    private readonly historyRepository: Repository<History>,
+    @InjectRepository(TaskListHistory)
+    private readonly historyRepository: Repository<TaskListHistory>,
   ) {}
 
-  logger = new Logger(HistoryService.name);
+  logger = new Logger(TaskListHistoryService.name);
 
   async create(
     record: {
       actionType: ActionType;
-      fieldName?: keyof Task;
+      fieldName?: keyof TaskList;
       oldValue?: string;
       newValue?: string;
     },
@@ -24,7 +24,7 @@ export class HistoryService {
   ) {
     const newRecord = this.historyRepository.create({
       ...record,
-      task: { id: taskId },
+      taskList: { id: taskId },
     });
     await this.historyRepository.save(newRecord);
 
