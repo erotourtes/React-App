@@ -9,30 +9,14 @@ import {
   UpdateTaskListDto,
 } from "@shared/dtos";
 
-export const tasksApi = createApi({
+export const api = createApi({
   reducerPath: "tasksApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
+  endpoints: () => ({}),
+});
+
+const tasksApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    createNewList: builder.mutation<TaskListT, CreateTaskListDto>({
-      query: (list) => ({
-        url: `task-lists`,
-        method: "POST",
-        body: list,
-      }),
-    }),
-    updateNewList: builder.mutation<UpdateTaskListDto, TaskListT>({
-      query: (list) => ({
-        url: `task-lists/${list.id}`,
-        method: "PATCH",
-        body: list,
-      }),
-    }),
-    deleteNewList: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `task-lists/${id}`,
-        method: "DELETE",
-      }),
-    }),
     getAllTaskLists: builder.query<TaskListT[], void>({
       query: () => `task-lists`,
     }),
@@ -62,13 +46,42 @@ export const tasksApi = createApi({
   }),
 });
 
+const listsApi = api.injectEndpoints({
+  endpoints: (builder) => ({
+    createNewList: builder.mutation<TaskListT, CreateTaskListDto>({
+      query: (list) => ({
+        url: `task-lists`,
+        method: "POST",
+        body: list,
+      }),
+    }),
+    updateNewList: builder.mutation<UpdateTaskListDto, TaskListT>({
+      query: (list) => ({
+        url: `task-lists/${list.id}`,
+        method: "PATCH",
+        body: list,
+      }),
+    }),
+    deleteNewList: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `task-lists/${id}`,
+        method: "DELETE",
+      }),
+    }),
+  }),
+  overrideExisting: false,
+});
+
 export const {
   useGetAllTaskListsQuery,
   useGetTasksForListQuery,
   useDeleteTaskMutation,
   useCreateNewTaskMutation,
-  useCreateNewListMutation,
   useUpdateTaskMutation,
+} = tasksApi;
+
+export const {
+  useCreateNewListMutation,
   useUpdateNewListMutation,
   useDeleteNewListMutation,
-} = tasksApi;
+} = listsApi;
