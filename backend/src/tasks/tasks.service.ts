@@ -61,7 +61,8 @@ export class TasksService {
     let list: TaskListT;
     if (task.listId) {
       list = await this.listService.findOne(task.listId);
-      if (!list) throw new NotFoundException(`List with id ${task.listId} not found`);
+      if (!list)
+        throw new NotFoundException(`List with id ${task.listId} not found`);
     }
 
     return this.taskRepository.save({
