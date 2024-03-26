@@ -30,9 +30,11 @@ import {
 function ListHeader({
   list,
   taskCount,
+  disabled,
 }: {
   list: TaskListT;
   taskCount: number;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
@@ -56,7 +58,10 @@ function ListHeader({
       <div className="flex gap-4">
         <p>{taskCount}</p>
         <DropdownMenu>
-          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
+          <DropdownMenuTrigger
+            disabled={disabled}
+            className="hover:bg-accent hover:text-accent-foreground rounded-sm"
+          >
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>

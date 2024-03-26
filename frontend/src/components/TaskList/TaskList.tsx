@@ -23,22 +23,23 @@ function TaskList() {
 
 function ListColumn({ list }: { list: TaskListT }) {
   const { data: tasks = [] } = useGetTasksForListQuery(list.id);
-
-  if (!isValidIdFor(list)) {
-    return (
-      <div className="min-w-[250px] h-[44px] flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
-        <p>{list.name}</p>
-        <Skeleton className="w-6 h-6 rounded-full" />
-      </div>
-    );
-  }
+  const isValidTask = isValidIdFor({ id: list.id });
 
   return (
     <div className="min-w-[250px] space-y-3">
-      <ListHeader list={list} taskCount={tasks.length} />
-      <AddTaskBtn list={list} />
+      <ListHeader
+        disabled={!isValidTask}
+        list={list}
+        taskCount={tasks.length}
+      />
+      {isValidTask ? <AddTaskBtn list={list} /> : <Skeleton className="h-10" />}
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} list={list} />
+        <TaskCard
+          disabled={!isValidIdFor(task)}
+          key={task.id}
+          task={task}
+          list={list}
+        />
       ))}
     </div>
   );

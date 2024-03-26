@@ -27,9 +27,11 @@ import { EditTaskDialog } from "./TaskEditDialog";
 function TaskCard({
   task,
   list: selectedList,
+  disabled,
 }: {
   task: TaskT;
   list: TaskListT;
+  disabled?: boolean;
 }) {
   const [openMenu, setOpenMenu] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -52,20 +54,24 @@ function TaskCard({
   };
 
   const onCardPressed = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) return;
     e.stopPropagation();
     setEditMode(false);
     setOpenDialog(true);
   };
 
   return (
-    <Card className="hover:border-primary">
+    <Card className={`hover:border-primary ${disabled && "bg-muted"}`}>
       <CardHeader
         onClick={onCardPressed}
         className="p-3 pb-1 flex-row justify-between"
       >
         {task.name}
         <DropdownMenu onOpenChange={setOpenMenu} open={openMenu}>
-          <DropdownMenuTrigger className="hover:bg-accent hover:text-accent-foreground rounded-sm">
+          <DropdownMenuTrigger
+            disabled={disabled}
+            className="hover:bg-accent hover:text-accent-foreground rounded-sm"
+          >
             <EllipsisVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -105,6 +111,7 @@ function TaskCard({
           className="bg-secondary"
           selectedListId={selectedList.id}
           onSelect={(id) => updateTask({ ...task, listId: id })}
+          disabled={disabled}
         />
       </CardContent>
       {openDialog && (

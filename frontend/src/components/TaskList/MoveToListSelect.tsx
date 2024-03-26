@@ -13,16 +13,18 @@ const MoveToListSelect = ({
   onSelect,
   className,
   placeholder,
+  disabled = false,
 }: {
   selectedListId: number;
   onSelect: (id: number) => void;
   className?: string;
   placeholder?: string;
+  disabled?: boolean;
 }) => {
   const { data: taskList = [] } = useGetAllTaskListsQuery();
   return (
     <Select onValueChange={(val) => onSelect(+val)}>
-      <SelectTrigger className={`w-full ${className}`}>
+      <SelectTrigger disabled={disabled} className={`w-full ${className}`}>
         <SelectValue placeholder={placeholder || "Move to:"} />
       </SelectTrigger>
       <SelectContent>
