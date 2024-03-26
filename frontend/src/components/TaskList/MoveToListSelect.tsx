@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { isValidIdFor } from "@/utils/utils";
 
 const MoveToListSelect = ({
   selectedListId,
@@ -27,7 +28,9 @@ const MoveToListSelect = ({
       <SelectContent>
         {taskList.map((list) => (
           <SelectItem
-            disabled={list.id == selectedListId}
+            disabled={
+              list.id == selectedListId || !isValidIdFor({ id: list.id })
+            }
             key={list.id}
             value={list.id.toString()}
           >

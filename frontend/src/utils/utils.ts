@@ -7,3 +7,5 @@ export const inputChange =
   (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
   };
+
+export const isValidIdFor = ({ id }: { id: number }) => id >= 0;
