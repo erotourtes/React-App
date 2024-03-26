@@ -1,3 +1,5 @@
+import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
+import { strDateFormat } from "@/utils/utils";
 import { TaskListT, TaskT } from "@shared/dtos";
 import {
   Calendar,
@@ -21,8 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { EditTaskDialog } from "./TaskEditDialog";
-import { strDateFormat } from "@/utils/utils";
-import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
 
 function TaskCard({
   task,
@@ -39,14 +39,20 @@ function TaskCard({
   const [updateTask] = useUpdateTaskMutation();
 
   const onEditPressed = (e: Event) => {
-    e.preventDefault();
+    e.stopPropagation();
     setOpenDialog(true);
     setOpenMenu(false);
     setEditMode(true);
   };
 
-  const onCardPressed = () => {
-    setOpenDialog(true);
+  const onDeletePressed = (e: Event) => {
+    e.stopPropagation();
+    e.stopPropagation();
+    deleteTask(task);
+  };
+
+  const onCardPressed = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setOpenMenu(false);
     setEditMode(false);
   };
@@ -68,7 +74,7 @@ function TaskCard({
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => deleteTask(task.id)}
+              onSelect={onDeletePressed}
               className="des-btn focus:des-btn-rev"
             >
               <PopupIcon icon={<Trash2 />} />

@@ -30,11 +30,24 @@ const tasksApi = api.injectEndpoints({
         body: { ...task },
       }),
     }),
-    deleteTask: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `tasks/${id}`,
+    deleteTask: builder.mutation<void, TaskT>({
+      query: (task) => ({
+        url: `tasks/${task.id}`,
         method: "DELETE",
       }),
+      onQueryStarted(task, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          tasksApi.util.updateQueryData(
+            "getTasksForList",
+            task.list.id,
+            (tasks) => tasks.filter((t) => t.id !== task.id)
+          )
+        );
+        queryFulfilled.catch(() => {
+          console.log("Error deleting task");
+          patchResult.undo();
+        });
+      },
     }),
     createNewTask: builder.mutation<TaskT, CreateTaskDto>({
       query: (task) => ({
