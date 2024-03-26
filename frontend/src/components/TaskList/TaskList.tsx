@@ -11,7 +11,7 @@ function TaskList() {
   const { data: lists = [] } = useGetAllTaskListsQuery();
 
   return (
-    <div className="flex gap-10 flex-wrap md:flex-nowrap md:overflow-x-scroll">
+    <div className="flex gap-10 flex-wrap md:flex-nowrap md:overflow-x-auto pb-5">
       {lists.map((list) => (
         <ListColumn key={list.id} list={list} />
       ))}
