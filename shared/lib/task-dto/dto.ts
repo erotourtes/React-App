@@ -5,8 +5,14 @@ import {
   IsOptional,
   MaxLength,
 } from "class-validator";
-import { Priority } from "./priority";
 import { PartialType } from "@nestjs/mapped-types";
+
+export enum Priority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  URGENT = 'urgent',
+}
 
 export class CreateTaskDto {
   @MaxLength(128)

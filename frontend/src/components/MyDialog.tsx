@@ -5,10 +5,16 @@ import { X } from "lucide-react";
 type TaskDialogProps = {
   onDialogChange: (open: boolean) => void;
   isOpen: boolean;
+  className?: string;
   children: React.ReactNode;
 };
 
-const MyDialog = ({ onDialogChange, isOpen, children }: TaskDialogProps) => {
+const MyDialog = ({
+  onDialogChange,
+  isOpen,
+  children,
+  className,
+}: TaskDialogProps) => {
   return (
     <Dialog onOpenChange={onDialogChange} open={isOpen}>
       <DialogContent className="overflow-hidden p-0 border-0 min-w-[90vw] min-h-[90vh]">
@@ -21,7 +27,7 @@ const MyDialog = ({ onDialogChange, isOpen, children }: TaskDialogProps) => {
               <X />
             </DialogClose>
           </div>
-          <div className="container">{children}</div>
+          <div className={`h-full ${className}`}>{children}</div>
         </div>
       </DialogContent>
     </Dialog>

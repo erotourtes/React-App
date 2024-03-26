@@ -7,7 +7,10 @@ import {
   CreateTaskDto,
   UpdateTaskDto,
   UpdateTaskListDto,
+  HistoryT,
 } from "@shared/dtos";
+
+// TODO: REFACTOR THIS
 
 export const api = createApi({
   reducerPath: "tasksApi",
@@ -138,6 +141,13 @@ const tasksApi = api.injectEndpoints({
   }),
 });
 
+export const {
+  useGetTasksForListQuery,
+  useCreateNewTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} = tasksApi;
+
 const listsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllTaskLists: builder.query<TaskListT[], void>({
@@ -214,15 +224,21 @@ const listsApi = api.injectEndpoints({
 });
 
 export const {
-  useGetTasksForListQuery,
-  useCreateNewTaskMutation,
-  useUpdateTaskMutation,
-  useDeleteTaskMutation,
-} = tasksApi;
-
-export const {
   useGetAllTaskListsQuery,
   useCreateNewListMutation,
   useUpdateNewListMutation,
   useDeleteNewListMutation,
 } = listsApi;
+
+const historyApi = api.injectEndpoints({
+  endpoints: (builder) => ({
+    getAllHistory: builder.query<void, void>({
+      query: () => `history`,
+    }),
+    getHistoryForTask: builder.query<HistoryT[], number>({
+      query: (taskId) => `history/tasks/${taskId}`,
+    }),
+  }),
+});
+
+export const { useGetHistoryForTaskQuery, useGetAllHistoryQuery } = historyApi;

@@ -93,7 +93,7 @@ const FormName = ({ onEditRequest }: { onEditRequest?: () => void }) => {
       control={form.control}
       name="name"
       render={({ field }) => (
-        <FormItem className="pt-5">
+        <FormItem>
           {edit ? (
             <Input
               placeholder="Name"
@@ -102,7 +102,7 @@ const FormName = ({ onEditRequest }: { onEditRequest?: () => void }) => {
             />
           ) : (
             <div className="flex justify-between items-center">
-              <H3 className="py-3">{field.value}</H3>
+              <H3>{field.value}</H3>
               <Button
                 variant="outline"
                 onClick={(e) => {

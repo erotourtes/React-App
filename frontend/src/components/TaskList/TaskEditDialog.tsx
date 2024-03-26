@@ -1,7 +1,9 @@
 import MyDialog from "@/components/MyDialog";
 import { TaskForm } from "@/components/TaskList/TaskForm";
+import { H3 } from "@/components/typography";
 import {
   useCreateNewTaskMutation,
+  useGetHistoryForTaskQuery,
   useUpdateTaskMutation,
 } from "@/redux/apiSlice";
 import { CreateTaskDto, TaskT } from "@shared/dtos";
@@ -28,6 +30,8 @@ const EditTaskDialog = ({
   const [isEdit, setIsEdit] = useState(editMode);
   const [update] = useUpdateTaskMutation();
 
+  const { data: history = [] } = useGetHistoryForTaskQuery(task.id);
+
   const dialogChange = (open: boolean) => {
     setIsEdit(false);
     onDialogChange(open);
@@ -41,13 +45,26 @@ const EditTaskDialog = ({
 
   return (
     <MyDialog isOpen={isOpen} onDialogChange={dialogChange}>
-      <TaskForm
-        onSubmit={submit}
-        edit={isEdit}
-        onEditRequest={() => setIsEdit(true)}
-        task={task}
-        listId={selectedListId}
-      />
+      <div className="flex h-full">
+        <div className="w-3/5 p-5">
+          <TaskForm
+            onSubmit={submit}
+            edit={isEdit}
+            onEditRequest={() => setIsEdit(true)}
+            task={task}
+            listId={selectedListId}
+          />
+        </div>
+        <div className="p-5 bg-secondary h-full w-2/5">
+          <H3>Task Action</H3>
+          {history?.map((h) => (
+            <div key={h.id}>
+              <div>{h.actionType}</div>
+              <div>{h.timestamp}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </MyDialog>
   );
 };
@@ -65,7 +82,7 @@ const AddTaskDialog = ({
   };
 
   return (
-    <MyDialog isOpen={isOpen} onDialogChange={onDialogChange}>
+    <MyDialog className="p-5" isOpen={isOpen} onDialogChange={onDialogChange}>
       <TaskForm onSubmit={submit} edit={true} listId={selectedListId} />
     </MyDialog>
   );
