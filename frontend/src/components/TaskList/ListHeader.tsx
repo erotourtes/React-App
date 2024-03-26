@@ -21,7 +21,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { TaskListT } from "@shared/dtos";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import {
+  useDeleteNewListMutation,
+  useUpdateNewListMutation,
+} from "@/redux/apiSlice";
 
 function ListHeader({
   list,
@@ -32,10 +36,19 @@ function ListHeader({
 }) {
   const [open, setOpen] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
+  const [deleteListApi] = useDeleteNewListMutation();
+  const [updateListApi] = useUpdateNewListMutation();
 
-  const deleteList = () => {
-    console.log("delete list");
-  };
+  const deleteList = useCallback(() => {
+    deleteListApi(list.id);
+  }, [list.id, deleteListApi]);
+
+  const updateList = useCallback(
+    (name: string) => {
+      updateListApi({ id: list.id, name });
+    },
+    [list.id, updateListApi]
+  );
 
   return (
     <div className="flex justify-between border-t-2 border-b-2 py-2 px-1 border-secondary">
@@ -76,7 +89,7 @@ function ListHeader({
           open={editDialog}
           onDialogChange={setEditDialog}
           list={list}
-          onSubmit={() => {}}
+          onSubmit={updateList}
         />
       )}
     </div>
@@ -86,7 +99,7 @@ function ListHeader({
 const DeleteBtn = ({ onConfirm }: { onConfirm: () => void }) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="flex">
+      <AlertDialogTrigger className="flex w-full">
         <PopupIcon icon={<Trash2 />} />
         Delete
       </AlertDialogTrigger>

@@ -6,6 +6,7 @@ import {
   CreateTaskListDto,
   CreateTaskDto,
   UpdateTaskDto,
+  UpdateTaskListDto,
 } from "@shared/dtos";
 
 export const tasksApi = createApi({
@@ -17,6 +18,19 @@ export const tasksApi = createApi({
         url: `task-lists`,
         method: "POST",
         body: list,
+      }),
+    }),
+    updateNewList: builder.mutation<UpdateTaskListDto, TaskListT>({
+      query: (list) => ({
+        url: `task-lists/${list.id}`,
+        method: "PATCH",
+        body: list,
+      }),
+    }),
+    deleteNewList: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `task-lists/${id}`,
+        method: "DELETE",
       }),
     }),
     getAllTaskLists: builder.query<TaskListT[], void>({
@@ -55,4 +69,6 @@ export const {
   useCreateNewTaskMutation,
   useCreateNewListMutation,
   useUpdateTaskMutation,
+  useUpdateNewListMutation,
+  useDeleteNewListMutation,
 } = tasksApi;

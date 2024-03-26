@@ -9,6 +9,11 @@ export class CreateTaskListDto {
   tasksIds: number[];
 }
 
+export class UpdateTaskListDto {
+  @MaxLength(128)
+  name: string;
+}
+
 export type TaskList = {
   id: number;
   name: string;

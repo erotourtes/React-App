@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TaskList } from './task-lists.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateTaskListDto, TaskListT } from '@shared/dtos';
+import { CreateTaskListDto, TaskListT, UpdateTaskListDto } from '@shared/dtos';
 
 @Injectable()
 export class TaskListsService {
@@ -30,7 +30,17 @@ export class TaskListsService {
     return await this.taskListsRepository.save(newTaskList);
   }
 
+  async update(id: number, dto: UpdateTaskListDto): Promise<TaskListT> {
+    const taskList = await this.findOneOrNull(id);
+    if (!taskList)
+      throw new NotFoundException(`Task list with id ${id} not found`);
+    Object.assign(taskList, dto);
+    return await this.taskListsRepository.save(taskList);
+  }
+
   async delete(id: number) {
+    if (!(await this.findOneOrNull(id)))
+      throw new NotFoundException(`Task list with id ${id} not found`);
     await this.taskListsRepository.delete(id);
   }
 }
