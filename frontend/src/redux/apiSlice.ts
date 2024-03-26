@@ -23,12 +23,26 @@ const tasksApi = api.injectEndpoints({
     getTasksForList: builder.query<TaskT[], number>({
       query: (list: number) => `tasks/?listId=${list}`,
     }),
-    updateTask: builder.mutation<TaskT, UpdateTaskDto>({
+    updateTask: builder.mutation<TaskT, UpdateTaskDto & { listId: number }>({
       query: (task) => ({
         url: `tasks/${task.id}`,
         method: "PATCH",
         body: { ...task },
       }),
+      onQueryStarted(task, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          tasksApi.util.updateQueryData(
+            "getTasksForList",
+            task.listId,
+            (tasks) =>
+              tasks.map((t) => (t.id === task.id ? { ...t, ...task } : t))
+          )
+        );
+        queryFulfilled.catch(() => {
+          console.log("Error updating task");
+          patchResult.undo();
+        });
+      },
     }),
     deleteTask: builder.mutation<void, TaskT>({
       query: (task) => ({

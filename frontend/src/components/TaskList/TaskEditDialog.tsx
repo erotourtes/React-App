@@ -33,7 +33,7 @@ const EditTaskDialog = ({
   };
 
   const submit = (data: CreateTaskDto) => {
-    update({ ...data, id: task!.id });
+    update({ ...data, id: task!.id, listId: selectedListId });
     onDialogChange(false);
   };
 
