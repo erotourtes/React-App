@@ -8,7 +8,7 @@ import {
 } from "@/redux/apiSlice";
 import { CreateTaskDto, TaskT } from "@shared/dtos";
 import { useState } from "react";
-import HistoryList from "@components/HistoryList";
+import TaskHistoryList from "@/components/TaskList/HistoryList";
 
 type TaskDialogProps = {
   onDialogChange: (open: boolean) => void;
@@ -57,7 +57,7 @@ const EditTaskDialog = ({
         </div>
         <div className="p-5 bg-secondary min-h-full w-2/5 min-w-full md:min-w-[300px]">
           <H3>Task Action</H3>
-          <HistoryList history={historyList} />
+          <TaskHistoryList history={historyList} />
         </div>
       </div>
     </MyDialog>

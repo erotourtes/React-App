@@ -232,7 +232,7 @@ export const {
 
 const historyApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllHistory: builder.query<void, void>({
+    getAllHistory: builder.query<HistoryT[], void>({
       query: () => `history`,
     }),
     getHistoryForTask: builder.query<HistoryT[], number>({

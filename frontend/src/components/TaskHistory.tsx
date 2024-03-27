@@ -2,55 +2,39 @@ import { strDateFormat, strDateFormatMAT } from "@/utils/utils";
 import { HistoryT, TaskT } from "@shared/dtos";
 import { ActionType as HistoryActionType } from "@shared/dtos/lib/history-dto/dto";
 import { CircleDot } from "lucide-react";
+import { ReactElement } from "react";
 
-const HistoryList = ({ history }: { history: HistoryT[] }) => {
-  if (!history || history.length == 0) return null;
+export const TaskHistory = ({ history }: { history: HistoryT }) => {
   return (
-    <div>
-      <ul className="list-disc ml-5 space-y-5">
-        {history.map((h) => (
-          <History key={h.id} history={h} />
-        ))}
-      </ul>
-    </div>
+    <li className="flex justify-between">
+      <p>{actionRemapper[history.actionType](history)}</p>
+      <span className="min-w-fit">{strDateFormatMAT(history.timestamp)}</span>
+    </li>
   );
 };
 
-const History = ({ history }: { history: HistoryT }) => {
-  const { actionType, timestamp, tableName } = history;
+const actionRemapper: Record<HistoryActionType, (h: HistoryT) => ReactElement> =
+  {
+    [HistoryActionType.CREATE]: (history) => (
+      <p>
+        You created {value(history.name)} {history.tableName}
+      </p>
+    ),
+    [HistoryActionType.UPDATE]: (history) => (
+      <p>{taskRemapper[history.fieldName as keyof TaskT](history)}</p>
+    ),
+    [HistoryActionType.DELETE]: (history) => (
+      <p>
+        You deleted {value(history.name)} {history.tableName}
+      </p>
+    ),
+  };
 
-  if (actionType === HistoryActionType.CREATE) {
-    return (
-      <li>
-        <p>
-          You created this {tableName}
-          <span className="float-right">{strDateFormatMAT(timestamp)}</span>
-        </p>
-      </li>
-    );
-  }
-
-  if (actionType === HistoryActionType.UPDATE) {
-    return (
-      <li>
-        <div className="flex justify-between">
-          <p>{taskRemapper[history.fieldName as keyof TaskT](history)}</p>
-          <span className="float-right min-w-[150px]">
-            {strDateFormatMAT(timestamp)}
-          </span>
-        </div>
-      </li>
-    );
-  }
-
-  return <div className="flex gap-2 p-2"></div>;
-};
-
-const value = (value: string) => {
+const value = (value?: string) => {
   return (
     <span>
       <CircleDot className="inline-block h-4 w-4 mr-1" />
-      <strong>{value}</strong>
+      <strong>{value ? value : "<empty>"}</strong>
     </span>
   );
 };
@@ -60,15 +44,11 @@ const taskRemapper: Record<
   (history: HistoryT) => React.ReactElement
 > = {
   id: () => <span></span>,
-  name: (history: HistoryT) => {
-    if (history.oldValue === "")
-      return <span>You added name {value(history.tableName)}`</span>;
-    return (
-      <span>
-        You renamed from {value(history.oldValue)} to {value(history.newValue)}{" "}
-      </span>
-    );
-  },
+  name: (history: HistoryT) => (
+    <span>
+      You renamed from {value(history.oldValue)} to {value(history.newValue)}{" "}
+    </span>
+  ),
   description: (history: HistoryT) =>
     !history.oldValue ? (
       <span>You added description {value(history.newValue)}</span>
@@ -107,5 +87,3 @@ const taskRemapper: Record<
       </span>
     ),
 };
-
-export default HistoryList;
