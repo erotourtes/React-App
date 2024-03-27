@@ -255,7 +255,7 @@ const FormDescription = () => {
           {edit ? (
             <Textarea placeholder="Description" {...field} rows={3} />
           ) : (
-            <p className="pl-4">{field.value}</p>
+            <p className="pl-3 text-ellipsis break-words">{field.value}</p>
           )}
           <FormMessage />
         </FormItem>

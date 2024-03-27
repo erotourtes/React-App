@@ -13,12 +13,12 @@ const MyDialog = ({
   onDialogChange,
   isOpen,
   children,
-  className,
+  className = "",
 }: TaskDialogProps) => {
   return (
     <Dialog onOpenChange={onDialogChange} open={isOpen}>
       <DialogContent className="overflow-hidden p-0 border-0 min-w-[90vw] min-h-[90vh]">
-        <div>
+        <div className="w-full h-full overflow-hidden">
           <div className="flex h-[50px] bg-primary text-primary-foreground items-center justify-end p-3">
             <DialogClose
               asChild
@@ -27,7 +27,9 @@ const MyDialog = ({
               <X />
             </DialogClose>
           </div>
-          <div className={`h-full ${className}`}>{children}</div>
+          <div className={`max-h-[calc(90vh-50px)] h-full w-full ${className}`}>
+            <div className="h-full overflow-auto">{children}</div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

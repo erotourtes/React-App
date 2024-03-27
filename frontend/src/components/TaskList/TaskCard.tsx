@@ -93,7 +93,7 @@ function TaskCard({
         onClick={onCardPressed}
         className="p-3 pt-0 flex flex-col gap-y-3"
       >
-        <p className="text-[0.9rem] opacity-grayish text-ellipsis overflow-hidden line-clamp-1">
+        <p className="text-[0.9rem] opacity-grayish text-ellipsis overflow-hidden w-[200px] line-clamp-1 ">
           {task.description}
         </p>
         <div className="flex gap-3">
