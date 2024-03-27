@@ -77,8 +77,10 @@ const AddTaskDialog = ({
   };
 
   return (
-    <MyDialog className="p-5" isOpen={isOpen} onDialogChange={onDialogChange}>
-      <TaskForm onSubmit={submit} edit={true} listId={selectedListId} />
+    <MyDialog isOpen={isOpen} onDialogChange={onDialogChange}>
+      <div className="p-5">
+        <TaskForm onSubmit={submit} edit={true} listId={selectedListId} />
+      </div>
     </MyDialog>
   );
 };
