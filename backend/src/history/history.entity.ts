@@ -22,16 +22,16 @@ export class History {
   @CreateDateColumn()
   timestamp: Date;
 
-  @Column({ length: 128, nullable: true })
+  @Column({ length: 128 })
   tableName: string;
 
   @Column({ length: 20, default: '' })
   fieldName: string;
 
-  @Column({ length: 128, default: '' })
+  @Column({ length: 128, nullable: true })
   oldValue: string;
 
-  @Column({ length: 128, default: '' })
+  @Column({ length: 128, nullable: true })
   newValue: string;
 
   @Column()

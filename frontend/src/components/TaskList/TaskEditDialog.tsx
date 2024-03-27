@@ -8,6 +8,7 @@ import {
 } from "@/redux/apiSlice";
 import { CreateTaskDto, TaskT } from "@shared/dtos";
 import { useState } from "react";
+import HistoryList from "@components/HistoryList";
 
 type TaskDialogProps = {
   onDialogChange: (open: boolean) => void;
@@ -29,8 +30,7 @@ const EditTaskDialog = ({
   if (!task) throw new Error("Task is required");
   const [isEdit, setIsEdit] = useState(editMode);
   const [update] = useUpdateTaskMutation();
-
-  const { data: history = [] } = useGetHistoryForTaskQuery(task.id);
+  const { data: historyList = [] } = useGetHistoryForTaskQuery(task.id);
 
   const dialogChange = (open: boolean) => {
     setIsEdit(false);
@@ -57,12 +57,7 @@ const EditTaskDialog = ({
         </div>
         <div className="p-5 bg-secondary h-full w-2/5">
           <H3>Task Action</H3>
-          {history?.map((h) => (
-            <div key={h.id}>
-              <div>{h.actionType}</div>
-              <div>{h.timestamp}</div>
-            </div>
-          ))}
+          <HistoryList history={historyList} />
         </div>
       </div>
     </MyDialog>

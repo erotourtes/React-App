@@ -10,7 +10,7 @@ export type HistoryT = {
   timestamp: string;
   tableName: string;
   fieldName: string;
-  oldValue: string;
-  newValue: string;
+  oldValue?: string;
+  newValue?: string;
   recordId: string;
 };

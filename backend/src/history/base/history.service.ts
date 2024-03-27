@@ -20,6 +20,8 @@ export class BaseHistoryService<T> {
   }) {
     const newRecord = this.historyRepository.create({
       ...record,
+      oldValue: record.oldValue?.substring(0, 128),
+      newValue: record.newValue?.substring(0, 128),
       fieldName: record.fieldName as string,
       tableName: this.tableName,
     });
@@ -37,7 +39,7 @@ export class BaseHistoryService<T> {
       where: {
         tableName: this.tableName,
       },
-      order: { timestamp: 'DESC' },
+      order: { timestamp: 'ASC' },
     });
   }
 
@@ -47,7 +49,7 @@ export class BaseHistoryService<T> {
         recordId: id,
         tableName: this.tableName,
       },
-      order: { timestamp: 'DESC' },
+      order: { timestamp: 'ASC' },
     });
   }
 }
