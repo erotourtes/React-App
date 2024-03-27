@@ -19,7 +19,7 @@ const AllHistoryList = ({ children }: React.PropsWithChildren) => {
           <SheetTitle className="bg-primary text-primary-foreground px-3 py-4 text-left">
             History
           </SheetTitle>
-          <div className="p-3 text-left h-screen space-y-5 overflow-auto">
+          <div className="p-3 text-left h-[calc(100vh-70px)] space-y-5 overflow-auto">
             {historyList.map((history) =>
               history.tableName === "task" ? (
                 <div key={history.id}>
