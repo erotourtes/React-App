@@ -1,8 +1,7 @@
-import { HistoryT } from "@shared/dtos";
+import { TaskHistory } from "@/components/TaskHistory";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -20,13 +19,16 @@ const AllHistoryList = ({ children }: React.PropsWithChildren) => {
           <SheetTitle className="bg-primary text-primary-foreground px-3 py-4 text-left">
             History
           </SheetTitle>
-          <SheetDescription className="p-3 text-left">
-            {historyList.map((history) => (
-              <div>
-                <p>{history.name}</p>
-              </div>
-            ))}
-          </SheetDescription>
+          <div className="p-3 text-left h-screen space-y-5 overflow-auto">
+            {historyList.map((history) =>
+              history.tableName === "task" ? (
+                <div>
+                  Task({history.name}):
+                  <TaskHistory key={history.id} history={history} />
+                </div>
+              ) : null
+            )}
+          </div>
         </SheetHeader>
       </SheetContent>
     </Sheet>
