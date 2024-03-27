@@ -37,19 +37,34 @@ export class BaseHistoryService<T> {
 
   async findAll(): Promise<History[]> {
     return await this.historyRepository.query(`
-SELECT h.*, t.name as name 
+SELECT h.*, t.name as name,
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."oldValue"::INTEGER)
+          ELSE h."oldValue"
+        END as "oldValue",
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."newValue"::INTEGER)
+          ELSE h."newValue"
+        END as "newValue"
 FROM history h
 LEFT JOIN task t 
   ON h."recordId" = t.id AND h."tableName" = 'task'
 ORDER BY h."timestamp" ASC
 `);
   }
-
   async findEntityHistory(id: number): Promise<HistoryT[]> {
     // TODO: raw sql in service
     return await this.historyRepository.query(
       `
-      SELECT h.*, t.name
+      SELECT h.*, t.name,
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."oldValue"::INTEGER)
+          ELSE h."oldValue"
+        END as "oldValue",
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."newValue"::INTEGER)
+          ELSE h."newValue"
+        END as "newValue"
       FROM history h
       LEFT JOIN ${this.tableName} t 
         ON h."recordId" = t.id
