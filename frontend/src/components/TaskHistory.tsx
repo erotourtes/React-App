@@ -7,7 +7,7 @@ import { ReactElement } from "react";
 export const TaskHistory = ({ history }: { history: HistoryT }) => {
   return (
     <li className="flex justify-between">
-      <p>{actionRemapper[history.actionType](history)}</p>
+      <div>{actionRemapper[history.actionType](history)}</div>
       <span className="min-w-fit">{strDateFormatMAT(history.timestamp)}</span>
     </li>
   );

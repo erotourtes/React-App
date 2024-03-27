@@ -16,6 +16,7 @@ export const api = createApi({
   reducerPath: "tasksApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
   endpoints: () => ({}),
+  tagTypes: ["History"],
 });
 
 const tasksApi = api.injectEndpoints({
@@ -27,6 +28,7 @@ const tasksApi = api.injectEndpoints({
       TaskT,
       { oldTask: TaskT; updatedTask: UpdateTaskDto }
     >({
+      invalidatesTags: ["History"],
       query: ({ updatedTask }) => ({
         url: `tasks/${updatedTask.id}`,
         method: "PATCH",
@@ -81,6 +83,7 @@ const tasksApi = api.injectEndpoints({
       },
     }),
     deleteTask: builder.mutation<void, TaskT>({
+      invalidatesTags: ["History"],
       query: (task) => ({
         url: `tasks/${task.id}`,
         method: "DELETE",
@@ -100,6 +103,7 @@ const tasksApi = api.injectEndpoints({
       },
     }),
     createNewTask: builder.mutation<TaskT, CreateTaskDto & { listId: number }>({
+      invalidatesTags: ["History"],
       query: (task) => ({
         url: `tasks`,
         method: "POST",
@@ -203,6 +207,7 @@ const listsApi = api.injectEndpoints({
       },
     }),
     deleteNewList: builder.mutation<void, number>({
+      invalidatesTags: ["History"],
       query: (id) => ({
         url: `task-lists/${id}`,
         method: "DELETE",
@@ -233,10 +238,12 @@ export const {
 const historyApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllHistory: builder.query<HistoryT[], void>({
-      query: () => `history`,
+      query: () => `history/tasks`,
+      providesTags: ["History"],
     }),
     getHistoryForTask: builder.query<HistoryT[], number>({
       query: (taskId) => `history/tasks/${taskId}`,
+      providesTags: ["History"],
     }),
   }),
 });

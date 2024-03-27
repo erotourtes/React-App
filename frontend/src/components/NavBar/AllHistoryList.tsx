@@ -22,9 +22,9 @@ const AllHistoryList = ({ children }: React.PropsWithChildren) => {
           <div className="p-3 text-left h-screen space-y-5 overflow-auto">
             {historyList.map((history) =>
               history.tableName === "task" ? (
-                <div>
+                <div key={history.id}>
                   Task({history.name}):
-                  <TaskHistory key={history.id} history={history} />
+                  <TaskHistory history={history} />
                 </div>
               ) : null
             )}
