@@ -36,12 +36,13 @@ export class BaseHistoryService<T> {
   }
 
   async findAll(): Promise<History[]> {
-    return this.historyRepository.find({
-      where: {
-        tableName: this.tableName,
-      },
-      order: { timestamp: 'ASC' },
-    });
+    return await this.historyRepository.query(`
+SELECT h.*, t.name as name 
+FROM history h
+LEFT JOIN task t 
+  ON h."recordId" = t.id AND h."tableName" = 'task'
+ORDER BY h."timestamp" ASC
+`);
   }
 
   async findEntityHistory(id: number): Promise<HistoryT[]> {
@@ -53,7 +54,7 @@ export class BaseHistoryService<T> {
       LEFT JOIN ${this.tableName} t 
         ON h."recordId" = t.id
       WHERE h."recordId" = $1
-      ORDER BY h.timestamp ASC;
+      ORDER BY h."timestamp" ASC
     `,
       [id],
     );
