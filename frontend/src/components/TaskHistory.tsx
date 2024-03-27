@@ -16,17 +16,13 @@ export const TaskHistory = ({ history }: { history: HistoryT }) => {
 const actionRemapper: Record<HistoryActionType, (h: HistoryT) => ReactElement> =
   {
     [HistoryActionType.CREATE]: (history) => (
-      <p>
-        You created {value(history.name)} {history.tableName}
-      </p>
+      <p>You created task {value(history.name)}</p>
     ),
     [HistoryActionType.UPDATE]: (history) => (
       <p>{taskRemapper[history.fieldName as keyof TaskT](history)}</p>
     ),
     [HistoryActionType.DELETE]: (history) => (
-      <p>
-        You deleted {value(history.name)} {history.tableName}
-      </p>
+      <p>You deleted task {value(history.name)}</p>
     ),
   };
 
@@ -46,7 +42,8 @@ const taskRemapper: Record<
   id: () => <span></span>,
   name: (history: HistoryT) => (
     <span>
-      You renamed from {value(history.oldValue)} to {value(history.newValue)}{" "}
+      You renamed task from {value(history.oldValue)} to{" "}
+      {value(history.newValue)}{" "}
     </span>
   ),
   description: (history: HistoryT) =>
@@ -59,11 +56,9 @@ const taskRemapper: Record<
       </span>
     ),
   list: (history: HistoryT) => {
-    if (history.oldValue === "")
-      return <span>You added list {value(history.newValue)}</span>;
     return (
       <span>
-        You moved from list {value(history.oldValue)} to{" "}
+        You moved task from list {value(history.oldValue)} to{" "}
         {value(history.newValue)}
       </span>
     );
