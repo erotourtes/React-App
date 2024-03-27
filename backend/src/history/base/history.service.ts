@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { HistoryActionType, History } from '../history.entity';
+import { HistoryT } from '@shared/dtos';
 
 export class BaseHistoryService<T> {
   logger: Logger;
@@ -34,7 +35,7 @@ export class BaseHistoryService<T> {
     });
   }
 
-  async findAll() {
+  async findAll(): Promise<History[]> {
     return this.historyRepository.find({
       where: {
         tableName: this.tableName,
@@ -43,14 +44,19 @@ export class BaseHistoryService<T> {
     });
   }
 
-  async findEntityHistory(id: number) {
-    return this.historyRepository.find({
-      where: {
-        recordId: id,
-        tableName: this.tableName,
-      },
-      order: { timestamp: 'ASC' },
-    });
+  async findEntityHistory(id: number): Promise<HistoryT[]> {
+    // TODO: raw sql in service
+    return await this.historyRepository.query(
+      `
+      SELECT h.*, t.name
+      FROM history h
+      LEFT JOIN ${this.tableName} t 
+        ON h."recordId" = t.id
+      WHERE h."recordId" = $1
+      ORDER BY h.timestamp ASC;
+    `,
+      [id],
+    );
   }
 }
 
@@ -66,11 +72,11 @@ export abstract class BaseHistoryServiceTemplate<T> {
     await this.historyService.create(record);
   }
 
-  async findAll() {
+  async findAll(): Promise<History[]> {
     return this.historyService.findAll();
   }
 
-  async findEntityHistory(id: number) {
+  async findEntityHistory(id: number): Promise<HistoryT[]> {
     return this.historyService.findEntityHistory(id);
   }
 }

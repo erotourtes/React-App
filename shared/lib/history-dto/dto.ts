@@ -13,4 +13,5 @@ export type HistoryT = {
   oldValue?: string;
   newValue?: string;
   recordId: string;
+  name: string;
 };
