@@ -45,8 +45,8 @@ const EditTaskDialog = ({
 
   return (
     <MyDialog isOpen={isOpen} onDialogChange={dialogChange}>
-      <div className="flex min-h-full">
-        <div className="w-3/5 p-5">
+      <div className="flex flex-wrap md:flex-nowrap min-h-full">
+        <div className="w-full md:w-3/5 p-5">
           <TaskForm
             onSubmit={submit}
             edit={isEdit}
@@ -55,7 +55,7 @@ const EditTaskDialog = ({
             listId={selectedListId}
           />
         </div>
-        <div className="p-5 bg-secondary min-h-full w-2/5">
+        <div className="p-5 bg-secondary min-h-full w-2/5 min-w-full md:min-w-[300px]">
           <H3>Task Action</H3>
           <HistoryList history={historyList} />
         </div>
