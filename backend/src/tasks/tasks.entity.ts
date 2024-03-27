@@ -8,7 +8,7 @@ import {
 import { TaskList } from 'src/task-lists/task-lists.entity';
 import { TaskPriority } from '@shared/dtos';
 
-@Entity()
+@Entity('task')
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,15 +20,17 @@ export class Task {
   description: string;
 
   @Column({ type: 'date', nullable: true })
-  dueDate?: Date;
+  dueDate?: string;
 
   @Column({ type: 'enum', enum: TaskPriority })
   priority: TaskPriority;
 
-  @Column({ unique: true })
-  order: number;
+  @Column({ default: false })
+  isDeleted: boolean;
 
-  @ManyToOne(() => TaskList, (taskList) => taskList.tasks)
-  @JoinColumn({ name: 'taskListId' })
-  taskList: TaskList;
+  @ManyToOne(() => TaskList, (taskList) => taskList.tasks, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'listId' })
+  list: TaskList;
 }

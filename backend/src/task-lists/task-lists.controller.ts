@@ -5,10 +5,11 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { TaskListsService } from './task-lists.service';
-import { CreateTaskListDto } from '@shared/dtos';
+import { CreateTaskListDto, UpdateTaskListDto } from '@shared/dtos';
 
 @Controller('task-lists')
 export class TaskListsController {
@@ -27,5 +28,13 @@ export class TaskListsController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.taskListsService.delete(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTaskListDto,
+  ) {
+    return this.taskListsService.update(id, dto);
   }
 }

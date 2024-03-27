@@ -1,18 +1,12 @@
-import { Task } from 'src/tasks/tasks.entity';
+import { HistoryActionType } from '@shared/dtos';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   CreateDateColumn,
 } from 'typeorm';
 
-export enum ActionType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-}
+export { HistoryActionType };
 
 @Entity()
 export class History {
@@ -21,23 +15,25 @@ export class History {
 
   @Column({
     type: 'enum',
-    enum: ActionType,
+    enum: HistoryActionType,
   })
   actionType: string;
 
   @CreateDateColumn()
   timestamp: Date;
 
+  @Column({ length: 128 })
+  tableName: string;
+
   @Column({ length: 20, default: '' })
   fieldName: string;
 
-  @Column({ length: 100, default: '' })
+  @Column({ length: 128, nullable: true })
   oldValue: string;
 
-  @Column({ length: 100, default: '' })
+  @Column({ length: 128, nullable: true })
   newValue: string;
 
-  @ManyToOne(() => Task, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'task_id' })
-  task: Task;
+  @Column()
+  recordId: number;
 }

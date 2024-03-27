@@ -12,6 +12,6 @@ export default registerAs(
     host: getOrThrow('DATABASE_HOST'),
     port: +getOrThrow('DATABASE_PORT'),
     synchronize: true,
-    ssl: true,
+    ssl: getOrThrow('DATABASE_SSL') === 'true',
   }),
 );

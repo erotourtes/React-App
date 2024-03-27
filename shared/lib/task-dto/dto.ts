@@ -2,12 +2,17 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsNumber,
   IsOptional,
   MaxLength,
-} from 'class-validator';
-import { Priority } from "./priority";
-import { PartialType } from '@nestjs/mapped-types';
+} from "class-validator";
+import { PartialType } from "@nestjs/mapped-types";
+
+export enum Priority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+  URGENT = 'urgent',
+}
 
 export class CreateTaskDto {
   @MaxLength(128)
@@ -18,16 +23,25 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsDateString()
-  dueDate?: Date;
+  dueDate?: string;
 
   @IsEnum(Priority)
   priority: Priority;
 
-  @IsNumber()
-  order: number;
-
   @IsInt()
-  taskListId: number;
+  listId: number;
 }
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+  @IsInt()
+  id: number;
+}
+
+export type Task = {
+  id: number;
+  name: string;
+  description: string;
+  dueDate?: string;
+  priority: Priority;
+  list: { id: number };
+};

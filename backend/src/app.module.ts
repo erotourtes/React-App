@@ -8,6 +8,7 @@ import { Task } from './tasks/tasks.entity';
 import { TaskList } from './task-lists/task-lists.entity';
 import { AppLoggerMiddleware } from './middlewares/AppLoggerMiddleware';
 import { History } from './history/history.entity';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -15,11 +16,11 @@ import { History } from './history/history.entity';
     TypeOrmModule.forRoot({
       ...databaseConfig(),
       entities: [Task, TaskList, History],
-      // subscribers: [TaskSubscriber], // Manually connecting in tasks.eventsubscriber.ts
     }),
     TaskModule,
     TaskListModule,
     ConfigModule,
+    HistoryModule,
   ],
   controllers: [],
   providers: [],
