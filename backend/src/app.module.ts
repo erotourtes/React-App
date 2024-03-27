@@ -9,10 +9,11 @@ import { TaskList } from './task-lists/task-lists.entity';
 import { AppLoggerMiddleware } from './middlewares/AppLoggerMiddleware';
 import { History } from './history/history.entity';
 import { HistoryModule } from './history/history.module';
+import { envConfig } from './config/env.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env.local' }),
+    ConfigModule.forRoot(envConfig()),
     TypeOrmModule.forRoot({
       ...databaseConfig(),
       entities: [Task, TaskList, History],

@@ -1,0 +1,14 @@
+FROM node:21-alpine3.18
+
+WORKDIR /app/shared
+COPY ./shared/package*.json .
+RUN npm install
+COPY ./shared .
+
+WORKDIR /app/backend
+COPY ./backend/package*.json .
+RUN npm install
+COPY ./backend .
+
+RUN npm run build
+CMD ["npm", "run", "start:prod"]
