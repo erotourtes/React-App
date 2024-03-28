@@ -1,6 +1,6 @@
 import { strDateFormat, strDateFormatMAT } from "@/utils/utils";
 import { HistoryT, TaskT } from "@shared/dtos";
-import { ActionType as HistoryActionType } from "@shared/dtos/lib/history-dto/dto";
+import { HistoryActionType } from "@shared/dtos/lib/history-dto/dto";
 import { CircleDot } from "lucide-react";
 import { ReactElement } from "react";
 

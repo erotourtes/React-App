@@ -1,11 +1,13 @@
 services:
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile.frontend
-  #   depends_on:
-  #     - shared
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - shared
+    ports:
+      - 4173:8080
 
   backend:
     build:

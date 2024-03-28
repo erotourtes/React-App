@@ -14,7 +14,7 @@ export class UpdateTaskListDto {
   name: string;
 }
 
-export type TaskList = {
+export type TaskListT = {
   id: number;
   name: string;
 }

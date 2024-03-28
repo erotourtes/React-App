@@ -7,6 +7,11 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@shared/dtos"],
   },
+  build: {
+    commonjsOptions: {
+      ignore: ["@shared/dtos"],
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
