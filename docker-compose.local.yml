@@ -7,7 +7,7 @@ services:
     depends_on:
       - shared
     ports:
-      - 4173:8080
+      - 8080:4173
 
   backend:
     build:

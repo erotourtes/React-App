@@ -11,6 +11,7 @@ import {
 } from "@shared/dtos";
 
 // TODO: REFACTOR THIS
+console.log("API_URL", import.meta.env.VITE_API_URL);
 
 export const api = createApi({
   reducerPath: "tasksApi",
