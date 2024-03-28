@@ -1,4 +1,4 @@
-export enum ActionType {
+export enum HistoryActionType {
   CREATE = "create",
   UPDATE = "update",
   DELETE = "delete",
@@ -6,7 +6,7 @@ export enum ActionType {
 
 export type HistoryT = {
   id: string;
-  actionType: ActionType;
+  actionType: HistoryActionType;
   timestamp: string;
   tableName: string;
   fieldName: string;

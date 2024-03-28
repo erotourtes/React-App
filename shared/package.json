@@ -9,13 +9,13 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "build:es": "tsc --module EsNext"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@nestjs/mapped-types": "^2.0.5",
     "class-validator": "^0.14.1"
   },
   "devDependencies": {

@@ -5,13 +5,12 @@ import {
   IsOptional,
   MaxLength,
 } from "class-validator";
-import { PartialType } from "@nestjs/mapped-types";
 
-export enum Priority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  URGENT = 'urgent',
+export enum TaskPriority {
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  URGENT = "urgent",
 }
 
 export class CreateTaskDto {
@@ -25,23 +24,44 @@ export class CreateTaskDto {
   @IsDateString()
   dueDate?: string;
 
-  @IsEnum(Priority)
-  priority: Priority;
+  @IsEnum(TaskPriority)
+  priority: TaskPriority;
 
   @IsInt()
   listId: number;
 }
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {
+// TODO
+export class UpdateTaskDto {
   @IsInt()
   id: number;
+
+  @IsOptional()
+  @MaxLength(128)
+  name?: string;
+
+  @IsOptional()
+  @MaxLength(65_535)
+  description?: string;
+
+  @IsOptional()
+  @IsDateString()
+  dueDate?: string;
+
+  @IsOptional()
+  @IsEnum(TaskPriority)
+  priority?: TaskPriority;
+
+  @IsOptional()
+  @IsInt()
+  listId?: number;
 }
 
-export type Task = {
+export type TaskT = {
   id: number;
   name: string;
   description: string;
   dueDate?: string;
-  priority: Priority;
+  priority: TaskPriority;
   list: { id: number };
 };

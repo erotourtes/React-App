@@ -24,6 +24,7 @@
     /* Custom */
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [
