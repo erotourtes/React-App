@@ -1,14 +1,5 @@
 import { api } from "@/redux/api/apiSlice";
 import { CreateTaskListDto, TaskListT, UpdateTaskListDto } from "@shared/dtos";
-import { toast } from "sonner";
-
-const error = (msg: string, err: { message: string }) => {
-  toast.error(msg, {
-    position: "top-right",
-    duration: 5000,
-    description: err.message,
-  });
-};
 
 export const listsApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,7 +32,7 @@ export const listsApi = api.injectEndpoints({
             );
           })
           .catch((err) => {
-            error("Error creating list", err);
+            console.log("Error creating list", err);
             patchResult.undo();
           });
       },
