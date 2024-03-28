@@ -9,13 +9,11 @@ import {
   UpdateTaskListDto,
   HistoryT,
 } from "@shared/dtos";
-
-// TODO: REFACTOR THIS
-console.log("API_URL", import.meta.env.VITE_API_URL);
+import config from "@/config";
 
 export const api = createApi({
   reducerPath: "tasksApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: config.API_URL }),
   endpoints: () => ({}),
   tagTypes: ["History"],
 });

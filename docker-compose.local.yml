@@ -8,6 +8,9 @@ services:
       - shared
     ports:
       - 8080:4173
+    environment:
+      # no need to use docker network
+      API_URL: http://localhost:3000/
 
   backend:
     build:
