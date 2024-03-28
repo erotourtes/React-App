@@ -1,7 +1,12 @@
 export const envConfig = () => {
+  const envFiles = {
+    development: '.env.dev',
+    production: '.env.local',
+    local: '',
+  };
+
   const env = process.env.NODE_ENV || 'development';
-  let envFilePath = '.env.local';
-  if (env === 'local') envFilePath = '';
+  const envFilePath = envFiles[env];
 
   return {
     envFilePath,
