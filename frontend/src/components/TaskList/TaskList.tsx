@@ -1,8 +1,6 @@
 import AddTaskBtn from "@/components/TaskList/AddTaskBtn";
-import {
-  useGetAllTaskListsQuery,
-  useGetTasksForListQuery,
-} from "@redux/apiSlice";
+import { useGetAllTaskListsQuery } from "@redux/api/hooks";
+import { useGetTasksForListQuery } from "@/redux/api/hooks";
 import { TaskListT } from "@shared/dtos";
 import ListHeader from "./ListHeader";
 import TaskCard from "./TaskCard";

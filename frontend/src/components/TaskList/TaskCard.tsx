@@ -12,7 +12,7 @@ import { useState } from "react";
 import {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
-} from "../../redux/apiSlice";
+} from "@/redux/api/hooks";
 import { PopupIcon } from "../popmenu-utils";
 import Priority from "../Priority";
 import { Card, CardContent, CardHeader } from "../ui/card";

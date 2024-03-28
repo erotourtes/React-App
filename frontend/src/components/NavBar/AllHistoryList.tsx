@@ -6,7 +6,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { useGetAllHistoryQuery } from "@/redux/apiSlice";
+import { useGetAllHistoryQuery } from "@/redux/api/hooks";
 
 const AllHistoryList = ({ children }: React.PropsWithChildren) => {
   const { data: historyList = [] } = useGetAllHistoryQuery();
