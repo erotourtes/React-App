@@ -6,7 +6,7 @@ export interface HistoryGateway {
   sendHistoryUpdate(history: HistoryT): void;
 }
 
-@WebSocketGateway({ path: '/ws' })
+@WebSocketGateway({ path: '/ws', cors: true })
 export class TaskHistoryGateway implements HistoryGateway {
   constructor() {}
 

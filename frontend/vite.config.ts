@@ -25,9 +25,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      "process.env.BASE_API_URL": JSON.stringify(env.BASE_API_URL),
-      "process.env.HTTP_PROTOCOL": JSON.stringify(env.HTTP_PROTOCOL),
-      "process.env.WS_PROTOCOL": JSON.stringify(env.WS_PROTOCOL),
+      "process.env.HTTP_URL": JSON.stringify(env.HTTP_URL),
+      "process.env.WS_URL": JSON.stringify(env.WS_URL),
     },
   };
 });
