@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start:dev": "tsc --watch",
-    "build": "tsc",
-    "build:es": "tsc --module EsNext"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

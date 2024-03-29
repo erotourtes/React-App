@@ -4,7 +4,10 @@
 
 ## Run an application using Docker
 ```bash
-docker compose --file docker-compose.local.yml up --build
+# Clone the repository
+git clone git@github.com:erotourtes/React-App.git && cd React-App
+
+docker compose up --build
 ```
 Open [http://localhost:8080/React-App/](http://localhost:8080/React-App/) in your browser.
 
@@ -18,7 +21,7 @@ npm run install
 ## Development mode
 ```bash
 # Setup database
-docker compose --file ./docker-compose.dev.yml up --build
+docker compose up --build db
 
 npm start
 ```
