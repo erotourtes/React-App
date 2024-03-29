@@ -1,15 +1,18 @@
 # Tasks
+> [!NOTE]
+> There is no backend CI/CD pipeline for this project. Therefore, the hosted site might be outdated and it is better to use [Docker](#run-an-application-using-docker).
+
 ## Run an application using Docker
 ```bash
 docker compose --file docker-compose.local.yml up --build
 ```
+Open [http://localhost:8080/React-App/](http://localhost:8080/React-App/) in your browser.
 
 ## Installation
 ```bash
 git clone git@github.com:erotourtes/React-App.git && cd React-App
 
-## Build
-npm run build
+npm run install
 ```
 
 ## Development mode
