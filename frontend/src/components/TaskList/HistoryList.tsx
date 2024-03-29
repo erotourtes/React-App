@@ -1,5 +1,5 @@
 import { TaskHistory } from "@/components/TaskHistory";
-import { HistoryT } from "@shared/dtos";
+import { HistoryT } from "@packages/types";
 
 const TaskHistoryList = ({ history }: { history: HistoryT[] }) => {
   if (!history || history.length == 0) return null;

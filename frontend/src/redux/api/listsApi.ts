@@ -1,5 +1,9 @@
 import { api } from "@/redux/api/apiSlice";
-import { CreateTaskListDto, TaskListT, UpdateTaskListDto } from "@shared/dtos";
+import {
+  CreateTaskListDto,
+  TaskListT,
+  UpdateTaskListDto,
+} from "@packages/types";
 
 export const listsApi = api.injectEndpoints({
   endpoints: (builder) => ({

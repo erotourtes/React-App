@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto, UpdateTaskDto } from '@shared/dtos';
+import { CreateTaskDto, UpdateTaskDto } from '@packages/types';
 
 @Controller('tasks')
 export class TasksController {

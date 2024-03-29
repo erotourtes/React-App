@@ -1,14 +1,14 @@
 {
-  "name": "@shared/dtos",
+  "name": "@packages/types",
   "version": "1.0.0",
   "description": "",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
-  "module": "dist/main.js",
-  "files": [
-    "/dist"
-  ],
+  "exports": {
+    ".": "./dist/main.js"
+  },
   "scripts": {
+    "start:dev": "tsc --watch",
     "build": "tsc",
     "build:es": "tsc --module EsNext"
   },

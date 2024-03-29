@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { CreateTaskDto, TaskPriority, TaskT } from "@shared/dtos";
+import { CreateTaskDto, TaskPriority, TaskT } from "@packages/types";
 import { BarChart, CalendarIcon, FileBarChart2, Pencil } from "lucide-react";
 import { useContext, createContext } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";

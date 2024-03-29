@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TaskList } from 'src/task-lists/task-lists.entity';
-import { TaskPriority } from '@shared/dtos';
+import { TaskPriority } from '@packages/types';
 
 @Entity('task')
 export class Task {

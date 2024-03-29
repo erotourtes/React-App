@@ -4,6 +4,6 @@ import config from "@/config";
 
 export const api = createApi({
   reducerPath: "tasksApi",
-  baseQuery: fetchBaseQuery({ baseUrl: config.API_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: config.HTTP_URL }),
   endpoints: () => ({}),
 });

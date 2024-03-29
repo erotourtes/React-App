@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start:dev": "npm run dev",
-    "start:prod": "npm run build && vite preview --host"
+    "start:prod": "vite preview --host"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -21,13 +21,11 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@reduxjs/toolkit": "^2.2.2",
-    "@shared/dtos": "file:../shared",
+    "@packages/types": "*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "class-variance-authority": "^0.7.0",
-    "classnames": "^2.5.1",
     "clsx": "^2.1.0",
-    "date-fns": "^3.6.0",
     "lucide-react": "^0.359.0",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
@@ -40,6 +38,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",

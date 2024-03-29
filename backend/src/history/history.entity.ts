@@ -1,4 +1,4 @@
-import { HistoryActionType } from '@shared/dtos';
+import { HistoryActionType } from '@packages/types';
 import {
   Entity,
   PrimaryGeneratedColumn,

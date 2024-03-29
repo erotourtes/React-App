@@ -6,7 +6,7 @@ import {
   useCreateNewTaskMutation,
   useUpdateTaskMutation,
 } from "@/redux/api/hooks";
-import { CreateTaskDto, TaskT } from "@shared/dtos";
+import { CreateTaskDto, TaskT } from "@packages/types";
 import { useState } from "react";
 import TaskHistoryList from "@/components/TaskList/HistoryList";
 

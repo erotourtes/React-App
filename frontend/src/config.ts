@@ -1,7 +1,10 @@
 const config = {
-  API_URL: process.env.API_URL,
+  HTTP_URL: process.env.HTTP_URL!,
+  WS_URL: process.env.WS_URL!,
 };
 
-if (!config.API_URL) throw new Error("API_URL is not defined");
+for (const key in config)
+  if (!config[key as keyof typeof config])
+    throw new Error(`Environment variable ${key} is not defined`);
 
 export default config;

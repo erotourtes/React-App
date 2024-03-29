@@ -7,7 +7,12 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './tasks.entity';
-import { CreateTaskDto, TaskListT, TaskT, UpdateTaskDto } from '@shared/dtos';
+import {
+  CreateTaskDto,
+  TaskListT,
+  TaskT,
+  UpdateTaskDto,
+} from '@packages/types';
 import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()

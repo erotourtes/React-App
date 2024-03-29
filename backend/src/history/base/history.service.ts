@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { HistoryActionType, History } from '../history.entity';
-import { HistoryT } from '@shared/dtos';
+import { HistoryT } from '@packages/types';
 import { HistoryGateway } from '../task/task.gateway';
 
 export class BaseHistoryService<T> {

@@ -15,6 +15,7 @@ async function bootstrap() {
     }),
   );
   app.useWebSocketAdapter(new WsAdapter(app));
+  app.setGlobalPrefix('api');
   await app.listen(process.env.PORT);
 }
 bootstrap();
