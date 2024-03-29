@@ -7,7 +7,6 @@
   ],
   "scripts": {
     "start": "turbo run start:dev",
-    "start:prod": "turbo run start:prod",
     "build": "turbo run build"
   },
   "devDependencies": {
