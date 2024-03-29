@@ -1,11 +1,11 @@
 import MyDialog from "@/components/MyDialog";
 import { TaskForm } from "@/components/TaskList/TaskForm";
 import { H3 } from "@/components/typography";
+import { useGetHistoryForTaskQuery } from "@/redux/api/hooks";
 import {
   useCreateNewTaskMutation,
-  useGetHistoryForTaskQuery,
   useUpdateTaskMutation,
-} from "@/redux/apiSlice";
+} from "@/redux/api/hooks";
 import { CreateTaskDto, TaskT } from "@shared/dtos";
 import { useState } from "react";
 import TaskHistoryList from "@/components/TaskList/HistoryList";

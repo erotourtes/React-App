@@ -22,8 +22,8 @@ const EditListDialog = ({
   const [name, setName] = useState(list.name);
 
   return (
-    <MyDialog className="p-5" isOpen={open} onDialogChange={onDialogChange}>
-      <div className="space-y-5">
+    <MyDialog isOpen={open} onDialogChange={onDialogChange}>
+      <div className="space-y-5 p-5">
         <H3>Edit list</H3>
         <div>
           Change name

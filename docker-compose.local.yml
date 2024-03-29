@@ -1,3 +1,5 @@
+name: tasks
+
 services:
 
   frontend:

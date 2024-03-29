@@ -25,7 +25,7 @@ import { useCallback, useState } from "react";
 import {
   useDeleteNewListMutation,
   useUpdateNewListMutation,
-} from "@/redux/apiSlice";
+} from "@/redux/api/hooks";
 
 function ListHeader({
   list,

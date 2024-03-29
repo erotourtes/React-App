@@ -1,4 +1,4 @@
-import { useGetAllTaskListsQuery } from "@/redux/apiSlice";
+import { useGetAllTaskListsQuery } from "@/redux/api/hooks";
 import {
   Select,
   SelectContent,

@@ -2,12 +2,14 @@ import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import { HistoryActionType, History } from '../history.entity';
 import { HistoryT } from '@shared/dtos';
+import { HistoryGateway } from '../task/task.gateway';
 
 export class BaseHistoryService<T> {
   logger: Logger;
   constructor(
     private readonly historyRepository: Repository<History>,
     private readonly tableName: string,
+    private readonly taskGateway: HistoryGateway,
   ) {
     this.logger = new Logger(`${BaseHistoryService.name}(${tableName})`);
   }
@@ -27,7 +29,9 @@ export class BaseHistoryService<T> {
       tableName: this.tableName,
     });
 
-    await this.historyRepository.save(newRecord);
+    const history = await this.historyRepository.save(newRecord);
+    const historyT = await this.joinHistory(history.id);
+    this.taskGateway.sendHistoryUpdate(historyT);
 
     this.logger.log({
       status: 'History record created',
@@ -52,6 +56,7 @@ LEFT JOIN task t
 ORDER BY h."timestamp" ASC
 `);
   }
+
   async findEntityHistory(id: number): Promise<HistoryT[]> {
     // TODO: raw sql in service
     return await this.historyRepository.query(
@@ -73,6 +78,29 @@ ORDER BY h."timestamp" ASC
     `,
       [id],
     );
+  }
+
+  private async joinHistory(historyId: number): Promise<HistoryT> {
+    const record = await this.historyRepository.query(
+      `
+      SELECT h.*, t.name,
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."oldValue"::INTEGER)
+          ELSE h."oldValue"
+        END as "oldValue",
+        CASE
+          WHEN h."fieldName" = 'list' THEN (SELECT name FROM task_list WHERE id = h."newValue"::INTEGER)
+          ELSE h."newValue"
+        END as "newValue"
+      FROM history h
+      LEFT JOIN ${this.tableName} t 
+        ON h."recordId" = t.id
+      WHERE h.id = $1
+      LIMIT 1;
+    `,
+      [historyId],
+    );
+    return record[0];
   }
 }
 

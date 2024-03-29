@@ -32,7 +32,7 @@ import { useContext, createContext } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { H3 } from "@/components/typography";
 import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
-import { useGetAllTaskListsQuery } from "@/redux/apiSlice";
+import { useGetAllTaskListsQuery } from "@/redux/api/hooks";
 
 interface TaskFormProps {
   task?: TaskT;

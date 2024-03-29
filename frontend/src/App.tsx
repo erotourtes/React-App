@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
 import TaskList from "./components/TaskList/TaskList";
@@ -9,6 +10,7 @@ function App() {
         <NavBar />
       </div>
       <TaskList />
+      <Toaster />
     </div>
   );
 }
