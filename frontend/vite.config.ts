@@ -15,6 +15,11 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         plugins: [commonjs()],
+        output: {
+          manualChunks(id) {
+            if (id.includes("/packages/")) return "packages";
+          },
+        },
       },
     },
     resolve: {
