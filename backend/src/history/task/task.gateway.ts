@@ -1,12 +1,12 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { HistoryT } from '@shared/dtos';
+import { HistoryT } from '@packages/types';
 import * as ws from 'ws';
 
 export interface HistoryGateway {
   sendHistoryUpdate(history: HistoryT): void;
 }
 
-@WebSocketGateway()
+@WebSocketGateway({ path: '/ws' })
 export class TaskHistoryGateway implements HistoryGateway {
   constructor() {}
 

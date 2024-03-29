@@ -1,4 +1,4 @@
-import { TaskPriority } from "@shared/dtos";
+import { TaskPriority } from "@packages/types";
 import { Badge } from "@components/ui/badge";
 
 const Priority = ({ priority }: { priority: TaskPriority }) => {

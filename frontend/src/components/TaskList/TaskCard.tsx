@@ -1,6 +1,6 @@
 import MoveToListSelect from "@/components/TaskList/MoveToListSelect";
 import { strDateFormat } from "@/utils/utils";
-import { TaskListT, TaskT } from "@shared/dtos";
+import { TaskListT, TaskT } from "@packages/types";
 import {
   Calendar,
   EllipsisVertical,

@@ -1,14 +1,15 @@
+import config from "@/config";
 import { api } from "@/redux/api/apiSlice";
 import { WebSocketService } from "@/redux/api/wsService";
-import { HistoryT } from "@shared/dtos";
+import { HistoryT } from "@packages/types";
 
-const wsService = WebSocketService.getInstace();
+const wsService = WebSocketService.create(config.WS_URL);
 
 export const historyApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllHistory: builder.query<HistoryT[], void>({
       query: () => `history/tasks`,
-      onCacheEntryAdded: async (arg, { updateCachedData }) => {
+      onCacheEntryAdded: async (_, { updateCachedData }) => {
         wsService.on<HistoryT>("history:task:new", (data) => {
           updateCachedData((draft) => {
             draft?.push(data);
@@ -18,7 +19,7 @@ export const historyApi = api.injectEndpoints({
     }),
     getHistoryForTask: builder.query<HistoryT[], number>({
       query: (taskId) => `history/tasks/${taskId}`,
-      onCacheEntryAdded: async (arg, { dispatch }) => {
+      onCacheEntryAdded: async (_, { dispatch }) => {
         wsService.on<HistoryT>("history:task:new", (data) => {
           dispatch(
             historyApi.util.updateQueryData(

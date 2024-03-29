@@ -3,7 +3,7 @@ import { H3 } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { inputChange } from "@/utils/utils";
-import { TaskListT } from "@shared/dtos";
+import { TaskListT } from "@packages/types";
 import { useState } from "react";
 
 interface EditListDialogProps {

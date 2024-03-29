@@ -1,6 +1,6 @@
 import { AddTaskDialog } from "@/components/TaskList/TaskEditDialog";
 import { Button } from "@/components/ui/button";
-import { TaskListT } from "@shared/dtos";
+import { TaskListT } from "@packages/types";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 

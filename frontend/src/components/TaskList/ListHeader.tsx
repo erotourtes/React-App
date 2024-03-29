@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { TaskListT } from "@shared/dtos";
+import { TaskListT } from "@packages/types";
 import { useCallback, useState } from "react";
 import {
   useDeleteNewListMutation,
