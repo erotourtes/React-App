@@ -4,20 +4,17 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    depends_on:
-      - shared
+      context: .
+      dockerfile: ./Dockerfile.frontend
     ports:
       - 8080:4173
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./Dockerfile.backend
     depends_on:
       - db
-      - shared
     ports:
       - 3000:3000
     environment:
@@ -29,9 +26,6 @@ services:
       DATABASE_USERNAME: 'Tasks_owner'
       DATABASE_PORT: 5432
       PORT: 3000
-
-  shared:
-    build: .
     
   db:
     image: postgres
