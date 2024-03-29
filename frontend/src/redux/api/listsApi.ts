@@ -56,7 +56,6 @@ export const listsApi = api.injectEndpoints({
       },
     }),
     deleteNewList: builder.mutation<void, number>({
-      invalidatesTags: ["History"],
       query: (id) => ({
         url: `task-lists/${id}`,
         method: "DELETE",

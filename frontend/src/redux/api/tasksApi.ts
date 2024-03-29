@@ -10,7 +10,6 @@ export const tasksApi = api.injectEndpoints({
       TaskT,
       { oldTask: TaskT; updatedTask: UpdateTaskDto }
     >({
-      invalidatesTags: ["History"],
       query: ({ updatedTask }) => ({
         url: `tasks/${updatedTask.id}`,
         method: "PATCH",
@@ -65,7 +64,6 @@ export const tasksApi = api.injectEndpoints({
       },
     }),
     deleteTask: builder.mutation<void, TaskT>({
-      invalidatesTags: ["History"],
       query: (task) => ({
         url: `tasks/${task.id}`,
         method: "DELETE",
@@ -85,7 +83,6 @@ export const tasksApi = api.injectEndpoints({
       },
     }),
     createNewTask: builder.mutation<TaskT, CreateTaskDto & { listId: number }>({
-      invalidatesTags: ["History"],
       query: (task) => ({
         url: `tasks`,
         method: "POST",
