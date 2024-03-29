@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start:dev": "npm run dev",
-    "start:prod": "npm run build && vite preview --host"
+    "start:prod": "vite preview --host"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
