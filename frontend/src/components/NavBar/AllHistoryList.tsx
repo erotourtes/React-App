@@ -7,9 +7,10 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { useGetAllHistoryQuery } from "@/redux/api/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AllHistoryList = ({ children }: React.PropsWithChildren) => {
-  const { data: historyList = [] } = useGetAllHistoryQuery();
+  const { data: historyList = [], isLoading } = useGetAllHistoryQuery();
 
   return (
     <Sheet>
@@ -19,6 +20,13 @@ const AllHistoryList = ({ children }: React.PropsWithChildren) => {
           <SheetTitle className="bg-primary text-primary-foreground px-3 py-4 text-left">
             History
           </SheetTitle>
+          {isLoading && (
+            <Skeleton className="p-3 space-y-3">
+              <div className="h-5 bg-gray-300 rounded-md" />
+              <div className="h-5 bg-gray-300 rounded-md" />
+              <div className="h-5 bg-gray-300 rounded-md" />
+            </Skeleton>
+          )}
           <div className="p-3 text-left h-[calc(100vh-70px)] space-y-5 overflow-auto">
             {historyList.map((history) =>
               history.tableName === "task" ? (
