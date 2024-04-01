@@ -1,6 +1,8 @@
 # Tasks
 > [!NOTE]
-> There is no backend CI/CD pipeline for this project. Therefore, the hosted site might be outdated and it is better to use [Docker](#run-an-application-using-docker).
+> I noticed that the free hosting service might not save history or it takes a while to show up.
+> I rely on database events, and I guess it doesn't have much time and resources to process.
+> Therefore, using [Docker](#run-an-application-using-docker) is recommended.
 
 ## Run an application using Docker
 ```bash
